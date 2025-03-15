@@ -1,7 +1,6 @@
 *.txt
 *.bat
 .vscode
-logs
 build
 data
 part1
