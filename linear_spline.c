@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #include "robot/log.h"
+
+#define Nx 100000
 
 typedef struct Point {
     double x, f;
@@ -20,39 +23,43 @@ double linearSpline(Point* points, double x, unsigned n) {
 }
 
 int main() {
-    Point points[100000];
+    srand(time(NULL));
+
+    Point points[200];
 
     unsigned N[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 33, 65, 101 };
     unsigned n = sizeof(N) / sizeof(unsigned);
-    double A = 0, b = 1, h, x;
-    double real, doubt, grade;
+    double A = 0, b = 1, h;
+    double real, doubt, grade, max_error;
 
-    scanf("%lg", &x);
+    double X[Nx];
+
+    for (unsigned i = 0; i < Nx; i++) X[i] = fmin(fmax(rand() * (b - A) / RAND_MAX - A, A), b);
 
     lopen("linear_spline");
     lprintl("----|--------------|---------------\n");
-    lprintl(" X:   %12lg\n", x);
-    lprintl("----|--------------|---------------\n");
-    lprintl(" N  | Error        | Grade\n");
+    lprintl(" N  | Norm         | Grade\n");
     lprintl("----|--------------|---------------\n");
 
     for (unsigned i = 0; i < n; i++) {
         double a = A;
         h = (b - a) / N[i];
-        grade = 1.0;
 
         for (unsigned j = 0; j < N[i] - 1; j++) {
             points[j] = (Point){ a, sin(a) };
             a += h;
-            grade /= 2.0 * (j + 1);
         }
         points[N[i] - 1] = (Point){ b, sin(b) };
-        grade /= 2.0 * N[i];
+        grade = pow(h, 2); // пересмотрел оценку
 
-        real = sin(x);
-        doubt = linearSpline(points, x, N[i]);
+        max_error = 0;
+        for (unsigned j = 0; j < Nx; j++) {
+            real = sin(X[j]);
+            doubt = linearSpline(points, X[j], N[i]);
+            if (max_error < fabs(real - doubt)) max_error = fabs(real - doubt); // норма
+        }
 
-        lprintl("%3u | %12lg | %12lg\n", N[i], fabs(real - doubt), grade);
+        lprintl("%3u | %12lg | %12lg\n", N[i], max_error, grade);
     }
 
     lclosel();
