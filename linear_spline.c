@@ -43,7 +43,7 @@ int main() {
 
     for (unsigned i = 0; i < n; i++) {
         double a = A;
-        h = (b - a) / N[i];
+        h = (b - a) / (N[i] - 1);
 
         for (unsigned j = 0; j < N[i] - 1; j++) {
             points[j] = (Point){ a, sin(a) };
