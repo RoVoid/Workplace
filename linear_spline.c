@@ -25,9 +25,9 @@ double linearSpline(Point* points, double x, unsigned n) {
 int main() {
     srand(time(NULL));
 
-    Point points[200];
+    Point points[300];
 
-    unsigned N[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 33, 65, 101 };
+    unsigned N[] = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 33, 65, 101, 200, 300 };
     unsigned n = sizeof(N) / sizeof(unsigned);
     double A = 0, b = 1, h;
     double real, doubt, grade, max_error;
