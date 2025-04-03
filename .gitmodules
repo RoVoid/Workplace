@@ -1,1 +1,1 @@
-git submodule add https://github.com/flaim4/LauncherServer submodule
+git submodule add https://github.com/flaim4/LauncherServer .
