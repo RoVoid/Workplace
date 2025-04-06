@@ -36,5 +36,6 @@ int main() {
     lprintl(" x^3  | "); integral(f3, df3, a, b);
     lprintl(" x^4  | "); integral(f4, df4, a, b);
     lprintl("------|--------------|--------------|------------------\n");
+    lclosel();
     return 0;
 }
