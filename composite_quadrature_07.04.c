@@ -12,7 +12,7 @@ double f2(double x) { return 10 / (1 + 25 * x * x); }
 double df2(double x) { return 2 * atan(5 * x); }
 
 void integral(double (*f)(double), double (*df)(double), double _a, double b, unsigned n) {
-    double doubt = 0, h = (b - _a) / (n - 1);
+    double doubt = 0, h = (b - _a) / (n - 1.0);
     for (unsigned i = 0; i < n - 1; i++) {
         double a = _a + h * i;
         double b = a + h;
@@ -35,7 +35,7 @@ int main() {
     lprintl("-------------------------------------------------------------------------\n");
     lprintl(" N = %u   [%lg; %lg]\n", n, a, b);
     lprintl("----------------|------------------|------------------|------------------\n");
-    lprintl(" F              | Doubt            | Exact            | Error\n");
+    lprintl(" F              | Doubt (Approx)   | Exact            | Error\n");
     lprintl("----------------|------------------|------------------|------------------\n");
     lprintl("           sin  | "); integral(sin, dsin, a, b, n);
     if (a > 0 || b < 0) { lprintl("           1/x  | "); integral(f1, df1, a, b, n); }
