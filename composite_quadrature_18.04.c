@@ -49,12 +49,12 @@ void integral(Function func, Quadrature quad, double _a, double b, double eps) {
             srend += i2 >= i1 ? delta : -delta;
             k++;
         }
-        else {
+        //else {
             chi = pow(delta / eps, 1.0 / quad.s);
             if (chi > 10.0) chi = 10.0;
             else if (chi < 0.1) chi = 0.1;
             h = h / chi * 0.95;
-        }
+        //}
     }
 
     double exact = func.df(b) - func.df(_a);
