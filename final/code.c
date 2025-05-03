@@ -1,60 +1,96 @@
 #include <stdio.h>
 #include <math.h>
 
-double f14(double u) {
-    return sin(u * u) + 1;
+double f14(double x) {
+    return sin(x * x) + 1;
 }
 
 typedef struct {
-    double (*f)(double (*)(double), double, double);
+    double (*rule)(double (*)(double), double, double);
     int s;
 } Quadrature;
 
 double markov(double (*f)(double), double a, double b) {
     double c = (b - a) / (2.0 * sqrt(5.0));
-    double mid = (a + b) / 2.0;
-    return (b - a) / 12.0 * (f(a) + 5.0 * (f(mid - c) + f(mid + c)) + f(b));
+    double m = (a + b) / 2.0;
+    return (b - a) / 12.0 * (f(a) + 5.0 * (f(m - c) + f(m + c)) + f(b));
 }
 
 Quadrature Markov = { markov, 7 };
 
-void integral(double (*func)(double), Quadrature quad, double _a, double b, double eps) {
-    double doubt = 0.0, i1, i2, a = _a, s = pow(2.0, quad.s - 1) - 1.0, delta;
-    double h = (b - a) / 10.0, qarant = 0.0, srend = 0.0, chi;
+typedef struct {
+    double start, end;
+} Interval;
+
+double alpha, eps = 1e-15;
+
+double integral(double (*f)(double), Quadrature qr, double a, double b) {
+    double scale = pow(2.0, qr.s - 1) - 1.0;
+    double sum = 0, h = 0.1;
+
     while (a < b) {
         if (a + h > b) h = b - a;
-        i1 = quad.f(func, a, a + h);
-        i2 = quad.f(func, a, a + h / 2.0) + quad.f(func, a + h / 2.0, a + h);
-        delta = fabs((i2 - i1) / s);
-
-        if (delta <= eps) {
+        double i1 = qr.rule(f, a, a + h);
+        double i2 = qr.rule(f, a, a + h / 2) + qr.rule(f, a + h / 2, a + h);
+        double err = fabs((i2 - i1) / scale);
+        if (err <= eps) {
+            sum += i2;
             a += h;
-            doubt += i2;
         }
-        chi = pow(delta / eps, 1.0 / quad.s);
-        if (chi > 10.0) chi = 10.0;
-        else if (chi < 0.1) chi = 0.1;
-        h = h / chi * 0.95;
+        double factor = pow(err / eps, 1.0 / qr.s);
+        if (factor > 10.0) factor = 10.0;
+        else if (factor < 0.1) factor = 0.1;
+        h = h / factor * 0.95;
     }
+
+    return sum;
 }
 
-double chordsMethod(double (*func)(double), double a, double b, double epsilon) {
-    double fa, fb, fc, c[2];
-    int i, aSign, k;
-    c[0] = a; c[1] = b; fa = func(a); fb = func(b);
+Interval findInterval(double (*f)(double), Quadrature qr, double a) {
+    double s = pow(2.0, qr.s - 1) - 1.0;
+    double sum = 0, h = 0.1;
 
-    if (fabs(fa) < epsilon) { return a; }
-    if (fabs(fb) < epsilon) { return b; }
+    while (sum < alpha - eps) {
+        double i1 = qr.rule(f, a, a + h);
+        double i2 = qr.rule(f, a, a + h / 2) + qr.rule(f, a + h / 2, a + h);
+        double err = fabs((i2 - i1) / s);
+        if (sum + i2 >= alpha - eps) return (Interval) { a, a + h };
+        if (err <= eps) {
+            sum += i2;
+            a += h;
+        }
+        double factor = pow(err / eps, 1.0 / qr.s);
+        if (factor > 10.0) factor = 10.0;
+        else if (factor < 0.1) factor = 0.1;
+        h = h / factor * 0.95;
+    }
 
-    aSign = sign(fa);
-    if (aSign == sign(fb)) return -1;
+    return (Interval) { a, a + h };
+}
 
-    for (k = 1, i = 0; fabs(c[1] - c[0]) > epsilon; k++, i = !i) {
+int sign(double x) {
+    return (x > 0) - (x < 0);
+}
+
+double methodChord(double (*f)(double), double a, double b) {
+    double fa = f(a), fb = f(b);
+    if (fabs(fa) < eps) return a;
+    if (fabs(fb) < eps) return b;
+
+    int si = sign(fa);
+    if (si == sign(fb)) return -1;
+
+    double c[2];
+    int i = 0;
+    c[0] = a;
+    c[1] = b;
+
+    while (fabs(c[1] - c[0]) > eps) {
         c[i] = (a * fb - b * fa) / (fb - fa);
-        fc = func(c[i]);
+        double fc = f(c[i]);
+        if (fabs(fc) < eps) return c[i];
 
-        if (fabs(fc) < epsilon) return c[i];
-        if (aSign == sign(fc)) {
+        if (sign(fc) == si) {
             a = c[i];
             fa = fc;
         }
@@ -62,14 +98,27 @@ double chordsMethod(double (*func)(double), double a, double b, double epsilon) 
             b = c[i];
             fb = fc;
         }
+        i = !i;
     }
 
     return c[i];
 }
 
+double equation(double x) {
+    return integral(f14, Markov, 0, x) - alpha;
+}
+
 int main() {
-    double alpha, eps = 1e-15;
     scanf("%lf", &alpha);
+
+    Interval interval = findInterval(f14, Markov, 0);
+    double center = (interval.start + interval.end) / 2.0;
+    double d = (interval.end - interval.start) * 2.0;
+
+    double x = methodChord(equation, center - d, center + d);
+
+    if (x == -1) printf("No found");
+    else printf("x ≈ %.15lf\n", x);
 
     return 0;
 }
