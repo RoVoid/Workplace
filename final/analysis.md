@@ -1,19 +1,39 @@
-$\displaystyle{\int}_0^x\dfrac{\sin{t}+1}{\sqrt{t}}dt=\alpha,\ \alpha\geq0$
+$$
+\displaystyle{\int}_0^x\dfrac{\sin{t}+1}{\sqrt{t}}dt=\alpha,\ \alpha\geq0
+$$
 
 Особенность в точке $t=0\Rightarrow$ замена: $t=u^2,\space{d}t=2udu,\quad{t}\in[0,x],u\in[0,\sqrt{x}]$
 
-$\displaystyle{\int}_0^\sqrt{x}\dfrac{\sin{u^2}+1}{\sqrt{u^2}}2udu=2\int_0^\sqrt{x}(\sin{u^2}+1)du$
+$$
+\displaystyle{\int}_0^\sqrt{x}\dfrac{\sin{u^2}+1}{\sqrt{u^2}}2udu=2\int_0^\sqrt{x}(\sin{u^2}+1)du
+$$
 
 ---
 
-$\displaystyle{\int}_0^\infty\dfrac{\sin{t}+1}{\sqrt{t}}dt=\int_0^1\dfrac{\sin{t}+1}{\sqrt{t}}dt+\int_1^\infty\dfrac{\sin{t}+1}{\sqrt{t}}dt$
+### 1. На промежутке $[0,1]$
 
-На отрезке $[0,1]\quad0\leq\dfrac{\sin{t}+1}{\sqrt{t}}\leq\dfrac{2}{\sqrt{t}}$
+В точке $t = 0$ функция не определена, но это **несобственный интеграл**, и он **сходится**, потому что:
 
-На промежутке $[1,+\infty)$
+$$
+0 \leq \frac{\sin t + 1}{\sqrt{t}} \leq \frac{2}{\sqrt{t}}, \quad \int_0^1 \frac{2}{\sqrt{t}} \, dt = 4
+$$
 
-$\displaystyle{\int}_1^\infty\dfrac{\sin{t}+1}{\sqrt{t}}dt=\int_1^\infty\dfrac{\sin{t}}{\sqrt{t}}dt+\int_1^\infty\dfrac{1}{\sqrt{t}}dt$
+А значит, по сравнению с $\frac{1}{\sqrt{t}}$, который интегрируем на $(0,1]$, наш интеграл тоже сходится.
 
-$\displaystyle\int_1^\infty\dfrac{\sin{t}}{\sqrt{t}}dt$ сходится *по теореме Дирихле*
+### 2. На промежутке $[1, \infty)$
 
-$\displaystyle\int_1^\infty\dfrac{1}{\sqrt{t}}dt$ расходится, значит весь интеграл расходится
+Разделим интеграл:
+
+$$
+\int_1^\infty \frac{\sin t + 1}{\sqrt{t}} \, dt = {\int_1^\infty \frac{\sin t}{\sqrt{t}} \, dt} + {\int_1^\infty \frac{1}{\sqrt{t}} \, dt}
+$$
+
+**Первая часть** сходится по **признаку Дирихле**:
+
+* $\frac{1}{\sqrt{t}}$ убывает и стремится к нулю,
+* $\sin t$ — ограниченная и имеет ограниченную первообразную.
+
+**Вторая часть** — это $\int_1^\infty \frac{1}{\sqrt{t}} dt = 2(\sqrt{t}) \Big|_1^\infty = \infty$, т.е. **расходится**.
+
+Так как одна из частей расходится, то весь интеграл на $[0, \infty)$ **расходится**.
+
