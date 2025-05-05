@@ -2,7 +2,7 @@
 #include <math.h>
 
 double f14(double x) {
-    return sin(x * x) + 1;
+    return 2 * (sin(x * x) + 1);
 }
 
 typedef struct {
@@ -22,17 +22,17 @@ typedef struct {
     double start, end;
 } Interval;
 
-double alpha, eps = 1e-15;
+double alpha, eps = 1e-22;
 
 double integral(double (*f)(double), Quadrature qr, double a, double b) {
-    double scale = pow(2.0, qr.s - 1) - 1.0;
+    double s = pow(2.0, qr.s - 1) - 1.0;
     double sum = 0, h = 0.1;
 
     while (a < b) {
         if (a + h > b) h = b - a;
         double i1 = qr.rule(f, a, a + h);
         double i2 = qr.rule(f, a, a + h / 2) + qr.rule(f, a + h / 2, a + h);
-        double err = fabs((i2 - i1) / scale);
+        double err = fabs((i2 - i1) / s);
         if (err <= eps) {
             sum += i2;
             a += h;
@@ -112,13 +112,24 @@ int main() {
     scanf("%lf", &alpha);
 
     Interval interval = findInterval(f14, Markov, 0);
+
     double center = (interval.start + interval.end) / 2.0;
     double d = (interval.end - interval.start) * 2.0;
 
     double x = methodChord(equation, center - d, center + d);
+    x = pow(x, 2);
 
     if (x == -1) printf("No found");
     else printf("x ≈ %.15lf\n", x);
 
     return 0;
 }
+
+/*
+21.1673 99.999152596941968 | 100
+5.64008 5.000104204826332  | 5
+10      19.756088113446108 | 19.76
+7.84968 10.000007971171399 | 10
+2.62054 1.000001844478633  | 1
+0.65352 0.099999905282096  | 0.1
+*/
