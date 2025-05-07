@@ -26,7 +26,7 @@ int main() {
         Point p0 = points[i], p1 = points[(i + 1) % n];
         if (p0.x < target.x && p1.x < target.x) continue;
         if ((p0.y > target.y) != (p1.y > target.y)) {
-            if (target.x < (p1.x - p0.x) * (target.y - p0.y) / (p1.y - p0.y) + p0.x) inside = !inside;
+            if (target.x <= (p1.x - p0.x) * (target.y - p0.y) / (p1.y - p0.y) + p0.x) inside = !inside;
         }
     }
 
