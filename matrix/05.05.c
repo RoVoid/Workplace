@@ -75,7 +75,9 @@ int main() {
     for (unsigned k = 0; k < result.n * result.m; k++)
         result.array[k] = matrixs[start].array[k];
 
-    printf("\n--------------------------\n");
+    printMatrix(-1);
+
+    printf("--------------------------\n");
     printf("i - update input matrixs\n");
     printf("= - set equal to matrix\n");
     printf("+ - add matrix\n");
@@ -106,14 +108,22 @@ int main() {
         else if (operation == '+') {
             unsigned i;
             scanf("%u", &i);
-            if (matrixs[i].n != result.n || matrixs[i].m != result.m) continue;
+            if (matrixs[i].n != result.n || matrixs[i].m != result.m) {
+                printf("No equal size!\n");
+                printf("--------------------------\n\n");
+                continue;
+            }
             for (unsigned k = 0; k < result.n * result.m; k++)
                 result.array[k] += matrixs[i].array[k];
         }
         else if (operation == '*') {
             unsigned i;
             scanf("%u", &i);
-            if (result.m != matrixs[i].n) continue;
+            if (result.m != matrixs[i].n) {
+                printf("No equal size!\n");
+                printf("--------------------------\n\n");
+                continue;
+            }
             Matrix newResult;
             newResult.n = result.n;
             newResult.m = matrixs[i].m;
@@ -139,7 +149,7 @@ int main() {
             unsigned i;
             scanf("%u", &i);
             printMatrix(i);
-            continue;;
+            continue;
         }
         else if (operation == 'x') {
             break;
