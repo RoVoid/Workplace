@@ -1,9 +1,18 @@
 #include <stdio.h>
 #include <math.h>
 
+#define LOG_FOLDER "../logs/"
+#include "../robot/log.h"
+
 double f14(double x) {
     return 2 * (sin(x * x) + 1);
 }
+
+double f14_result(double x) {
+    return x * x;
+}
+
+double eps = 1e-19;
 
 typedef struct {
     double (*rule)(double (*)(double), double, double);
@@ -22,31 +31,7 @@ typedef struct {
     double start, end;
 } Interval;
 
-double alpha, eps = 1e-22;
-
-double integral(double (*f)(double), Quadrature qr, double a, double b) {
-    double s = pow(2.0, qr.s - 1) - 1.0;
-    double sum = 0, h = 0.1;
-
-    while (a < b) {
-        if (a + h > b) h = b - a;
-        double i1 = qr.rule(f, a, a + h);
-        double i2 = qr.rule(f, a, a + h / 2) + qr.rule(f, a + h / 2, a + h);
-        double err = fabs((i2 - i1) / s);
-        if (err <= eps) {
-            sum += i2;
-            a += h;
-        }
-        double factor = pow(err / eps, 1.0 / qr.s);
-        if (factor > 10.0) factor = 10.0;
-        else if (factor < 0.1) factor = 0.1;
-        h = h / factor * 0.95;
-    }
-
-    return sum;
-}
-
-Interval findInterval(double (*f)(double), Quadrature qr, double a) {
+Interval findInterval(double (*f)(double), Quadrature qr, double alpha, double a) {
     double s = pow(2.0, qr.s - 1) - 1.0;
     double sum = 0, h = 0.1;
 
@@ -72,8 +57,38 @@ int sign(double x) {
     return (x > 0) - (x < 0);
 }
 
-double methodChord(double (*f)(double), double a, double b) {
-    double fa = f(a), fb = f(b);
+double integral(double (*f)(double), Quadrature qr, double a, double b) {
+    double s = pow(2.0, qr.s - 1) - 1.0, sum = 0, h = 0.1;
+    double qarant = 0, srend = 0;
+    unsigned k = 0;
+
+    while (a < b) {
+        if (a + h > b) h = b - a;
+        double i1 = qr.rule(f, a, a + h);
+        double i2 = qr.rule(f, a, a + h / 2) + qr.rule(f, a + h / 2, a + h);
+        double err = fabs((i2 - i1) / s);
+        if (err <= eps) {
+            sum += i2;
+            a += h;
+            qarant += err;
+            srend += i2 >= i1 ? err : -err;
+            k++;
+        }
+        double factor = pow(err / eps, 1.0 / qr.s);
+        if (factor > 10.0) factor = 10.0;
+        else if (factor < 0.1) factor = 0.1;
+        h = h / factor * 0.95;
+    }
+
+    return sum;
+}
+
+double equation(double (*f)(double), Quadrature qr, double alpha, double x) {
+    return integral(f, qr, 0, x) - alpha;
+}
+
+double methodChord(double (*f)(double), double (*f_result)(double), Quadrature qr, double alpha, double a, double b, unsigned* k) {
+    double fa = equation(f, qr, alpha, a), fb = equation(f, qr, alpha, b);
     if (fabs(fa) < eps) return a;
     if (fabs(fb) < eps) return b;
 
@@ -86,8 +101,9 @@ double methodChord(double (*f)(double), double a, double b) {
     c[1] = b;
 
     while (fabs(c[1] - c[0]) > eps) {
+        *k++;
         c[i] = (a * fb - b * fa) / (fb - fa);
-        double fc = f(c[i]);
+        double fc = equation(f, qr, alpha, c[i]);
         if (fabs(fc) < eps) return c[i];
 
         if (sign(fc) == si) {
@@ -104,34 +120,35 @@ double methodChord(double (*f)(double), double a, double b) {
     return c[i];
 }
 
-double equation(double x) {
-    return integral(f14, Markov, 0, x) - alpha;
-}
+void execute(double (*f)(double), double (*f_result)(double), Quadrature qr, double alpha, double root) {
+    lprintl("---------------------------------------------\n");
 
-int main() {
-    scanf("%lf", &alpha);
-
-    Interval interval = findInterval(f14, Markov, 0);
-
+    Interval interval = findInterval(f, qr, alpha, 0);
     double center = (interval.start + interval.end) / 2.0;
     double d = (interval.end - interval.start) * 2.0;
 
-    double x = methodChord(equation, center - d, center + d);
-    x = pow(x, 2);
 
-    if (x == -1) printf("No found");
-    else printf("x ≈ %.15lf\n", x);
+    unsigned k = 1;
+    double x = methodChord(f, f_result, qr, alpha, center - d, center + d, &k);
 
-    return 0;
+    lprintl(" K (Method Chord): %u\n", k);
+
+    lprintl("  -----    -----    -----    -----    -----\n");
+
+    lprintl(" Root:  %-14.10lf  Found: ", root);
+    if (x == -1) lprintl("-\n Error: -\n");
+    else {
+        x = f_result(x);
+        lprintl("%-14.10lf\n Error: %-14.10lf\n", x, fabs(x - root));
+    }
 }
 
-/*
-   A         Doubt X          X
-21.1673 99.999152596941968 | 100
-5.64008 5.000104204826332  | 5
-10      19.756088113446108 | 19.76
-7.84968 10.000007971171399 | 10
-2.62054 1.000001844478633  | 1
-0.65352 0.099999905282096  | 0.1
-0.00632 0.000010000011377  | 0.00001
-*/
+int main() {
+    lopen("final");
+
+    execute(f14, f14_result, Markov, 7.849678850620078, 10);
+
+    lprintl("---------------------------------------------\n");
+    lclosel();
+    return 0;
+}
