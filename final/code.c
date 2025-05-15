@@ -31,24 +31,29 @@ typedef struct {
     double start, end;
 } Interval;
 
-Interval findInterval(double (*f)(double), Quadrature qr, double alpha, double a) {
+Interval findInterval(double (*f)(double), Quadrature qr, double alpha, double a, double* qarant, double* srend, unsigned* k) {
     double s = pow(2.0, qr.s - 1) - 1.0;
     double sum = 0, h = 0.1;
 
     while (sum < alpha - eps) {
+        (*k)++;
         double i1 = qr.rule(f, a, a + h);
         double i2 = qr.rule(f, a, a + h / 2) + qr.rule(f, a + h / 2, a + h);
         double err = fabs((i2 - i1) / s);
-        if (sum + i2 >= alpha - eps) return (Interval) { a, a + h };
+        if (sum + i2 >= alpha - eps) break;
         if (err <= eps) {
             sum += i2;
             a += h;
+            *qarant += err;
+            *srend += i2 >= i1 ? err : -err;
         }
         double factor = pow(err / eps, 1.0 / qr.s);
         if (factor > 10.0) factor = 10.0;
         else if (factor < 0.1) factor = 0.1;
         h = h / factor * 0.95;
     }
+
+    *srend = fabs(*srend);
 
     return (Interval) { a, a + h };
 }
@@ -59,8 +64,6 @@ int sign(double x) {
 
 double integral(double (*f)(double), Quadrature qr, double a, double b) {
     double s = pow(2.0, qr.s - 1) - 1.0, sum = 0, h = 0.1;
-    double qarant = 0, srend = 0;
-    unsigned k = 0;
 
     while (a < b) {
         if (a + h > b) h = b - a;
@@ -70,9 +73,6 @@ double integral(double (*f)(double), Quadrature qr, double a, double b) {
         if (err <= eps) {
             sum += i2;
             a += h;
-            qarant += err;
-            srend += i2 >= i1 ? err : -err;
-            k++;
         }
         double factor = pow(err / eps, 1.0 / qr.s);
         if (factor > 10.0) factor = 10.0;
@@ -101,7 +101,7 @@ double methodChord(double (*f)(double), double (*f_result)(double), Quadrature q
     c[1] = b;
 
     while (fabs(c[1] - c[0]) > eps) {
-        *k++;
+        (*k)++;
         c[i] = (a * fb - b * fa) / (fb - fa);
         double fc = equation(f, qr, alpha, c[i]);
         if (fabs(fc) < eps) return c[i];
@@ -121,25 +121,30 @@ double methodChord(double (*f)(double), double (*f_result)(double), Quadrature q
 }
 
 void execute(double (*f)(double), double (*f_result)(double), Quadrature qr, double alpha, double root) {
-    lprintl("---------------------------------------------\n");
+    lprintl("----------------------------------------------\n");
 
-    Interval interval = findInterval(f, qr, alpha, 0);
+    double qarant = 0, srend = 0;
+    unsigned k = 0;
+
+    Interval interval = findInterval(f, qr, alpha, 0, &qarant, &srend, &k);
     double center = (interval.start + interval.end) / 2.0;
     double d = (interval.end - interval.start) * 2.0;
 
+    lprintl(" Qar.:  %14.10lf  Sren.: %14.10lf  (Integral)\n", qarant, srend);
+    lprintl(" K: %u  (Integral)\n", k);
 
-    unsigned k = 1;
+    k = 1;
     double x = methodChord(f, f_result, qr, alpha, center - d, center + d, &k);
 
-    lprintl(" K (Method Chord): %u\n", k);
+    lprintl(" K: %u  (Method Chord)\n", k);
 
     lprintl("  -----    -----    -----    -----    -----\n");
 
-    lprintl(" Root:  %-14.10lf  Found: ", root);
+    lprintl(" Root:  %14.10lf  Found: ", root);
     if (x == -1) lprintl("-\n Error: -\n");
     else {
         x = f_result(x);
-        lprintl("%-14.10lf\n Error: %-14.10lf\n", x, fabs(x - root));
+        lprintl("%14.10lf\n Error: %14.10lf\n", x, fabs(x - root));
     }
 }
 
@@ -147,8 +152,12 @@ int main() {
     lopen("final");
 
     execute(f14, f14_result, Markov, 7.849678850620078, 10);
+    execute(f14, f14_result, Markov, 21.16734179985924, 100);
+    execute(f14, f14_result, Markov, 1.64574, 0.5);
+    execute(f14, f14_result, Markov, 0.0002, 0.00000001);
+    execute(f14, f14_result, Markov, 79.35445578244514, 1524);
 
-    lprintl("---------------------------------------------\n");
+    lprintl("----------------------------------------------\n");
     lclosel();
     return 0;
 }
