@@ -12,7 +12,7 @@ double f14_result(double x) {
     return x * x;
 }
 
-double eps = 1e-19;
+double eps = 1e-17;
 
 typedef struct {
     double (*rule)(double (*)(double), double, double);

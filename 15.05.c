@@ -1,17 +1,21 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "robot/log.h"
+// #include "robot/log.h"
 
 double function0(double x) {
     return sin(x);
 }
 
 double function1(double x) {
-    return x - pow(log(fabs(x)), 2);
+    return x - pow(log(x + 1), 2);
 }
 
-double epsilon = 1e-15;
+double function2(double x) {
+    return (x - 2) * (x - 2) + 1;
+}
+
+double epsilon = 1e-11;
 
 double min_half(double (*f)(double), double a, double b, unsigned* k) {
     double x1, x2 = (a + b) / 2, x3;
@@ -23,7 +27,7 @@ double min_half(double (*f)(double), double a, double b, unsigned* k) {
         x1 = (a + x2) / 2; x3 = (x2 + b) / 2;
         f1 = f(x1); f3 = f(x3);
 
-        if (f1 < f2 && f1 < f3) { x2 = x1; b = x2; f2 = f1; }
+        if (f1 < f2 && f1 < f3) { b = x2; x2 = x1; f2 = f1; }
         else if (f2 < f3) { a = x1; b = x3; }
         else { a = x2; x2 = x3; f2 = f3; }
     }
@@ -37,9 +41,9 @@ int main() {
 
     scanf("%lf%lf", &a, &b);
 
-    x = min_half(function1, a, b, &k);
+    x = min_half(function2, a, b, &k);
 
-    printf("X:    %15.10lf\nf(X): %15.10lf\nK: %u\n", x, function1(x), k);
+    printf("X:    %15.10lf\nf(X): %15.10lf\nK: %u\n", x, function2(x), k);
 
     return 0;
 }
