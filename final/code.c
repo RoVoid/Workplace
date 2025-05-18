@@ -12,7 +12,7 @@ double f14_result(double x) {
     return x * x;
 }
 
-double eps = 1e-17;
+double eps = 1e-15;
 
 typedef struct {
     double (*rule)(double (*)(double), double, double);
@@ -31,7 +31,7 @@ typedef struct {
     double start, end;
 } Interval;
 
-Interval findInterval(double (*f)(double), Quadrature qr, double alpha, double a, double* sum, double* qarant, double* srend, unsigned* k) {
+Interval findInterval(double (*f)(double), Quadrature qr, double eps, double alpha, double a, double* sum, double* qarant, double* srend, unsigned* k) {
     double s = pow(2.0, qr.s - 1) - 1.0, h = 0.1;
 
     *sum = 0;
@@ -62,7 +62,7 @@ int sign(double x) {
     return (x > 0) - (x < 0);
 }
 
-double integral(double (*f)(double), Quadrature qr, double a, double b) {
+double integral(double (*f)(double), Quadrature qr, double eps, double a, double b) {
     double s = pow(2.0, qr.s - 1) - 1.0, sum = 0, h = b - a;
 
     while (a < b) {
@@ -83,12 +83,12 @@ double integral(double (*f)(double), Quadrature qr, double a, double b) {
     return sum;
 }
 
-double equation(double (*f)(double), Quadrature qr, double alpha, double x, double sum, double a) {
-    return sum + integral(f, qr, a, x) - alpha; // упала точность после замены 0 на a
+double equation(double (*f)(double), Quadrature qr, double eps, double alpha, double x, double sum, double a) {
+    return sum + integral(f, qr, eps, a, x) - alpha;
 }
 
-double methodChord(double (*f)(double), double (*f_result)(double), Quadrature qr, double alpha, double a, double b, double sum, unsigned* k) {
-    double fa = sum - alpha, fb = equation(f, qr, alpha, b, sum, a);
+double methodChord(double (*f)(double), double (*f_result)(double), Quadrature qr, double eps, double alpha, double a, double b, double sum, unsigned* k) {
+    double fa = sum - alpha, fb = equation(f, qr, eps, alpha, b, sum, a);
 
     int si = sign(fa);
 
@@ -100,7 +100,7 @@ double methodChord(double (*f)(double), double (*f_result)(double), Quadrature q
     while (fabs(c[1] - c[0]) > eps) {
         (*k)++;
         c[i] = (a * fb - b * fa) / (fb - fa);
-        double fc = equation(f, qr, alpha, c[i], sum, a);
+        double fc = equation(f, qr, eps, alpha, c[i], sum, a);
         if (fabs(fc) < eps) return c[i];
 
         if (sign(fc) == si) {
@@ -117,22 +117,22 @@ double methodChord(double (*f)(double), double (*f_result)(double), Quadrature q
     return c[i];
 }
 
-void execute(double (*f)(double), double (*f_result)(double), Quadrature qr, double alpha, double root) {
+void execute(double (*f)(double), double (*f_result)(double), Quadrature qr, double eps, double alpha, double root) {
     lprintl("----------------------------------------------\n");
+
+    lprintl(" Epsilon:  %.0le\n\n", eps);
 
     double sum;
     double qarant = 0, srend = 0;
     unsigned k = 0;
 
-    Interval interval = findInterval(f, qr, alpha, 0, &sum, &qarant, &srend, &k);
-    double center = (interval.start + interval.end) / 2.0;
-    double d = (interval.end - interval.start) * 2.0;
+    Interval interval = findInterval(f, qr, eps, alpha, 0, &sum, &qarant, &srend, &k);
 
     lprintl(" Qar.:  %14.10lf  Sren.: %14.10lf  (Integral)\n", qarant, srend);
     lprintl(" K: %u  (Integral)\n", k);
 
     k = 1;
-    double x = methodChord(f, f_result, qr, alpha, center - d, center + d, sum, &k);
+    double x = methodChord(f, f_result, qr, eps, alpha, interval.start, interval.end, sum, &k);
 
     lprintl(" K: %u  (Method Chord)\n", k);
 
@@ -146,14 +146,25 @@ void execute(double (*f)(double), double (*f_result)(double), Quadrature qr, dou
     }
 }
 
+typedef struct {
+    double alpha, root;
+} Set;
+
 int main() {
     lopen("final");
 
-    execute(f14, f14_result, Markov, 7.849678850620078, 10);
-    execute(f14, f14_result, Markov, 21.16734179985924, 100);
-    execute(f14, f14_result, Markov, 1.64574, 0.5);
-    execute(f14, f14_result, Markov, 0.0002, 0.00000001);
-    execute(f14, f14_result, Markov, 79.35445578244514, 1524);
+    Set sets[] = { {7.849678850620078, 10}, {21.16734179985924, 100}, {1.64574, 0.5}, {0.0002, 0.00000001}, {79.35445578244514, 1524} };
+    unsigned Nsets = sizeof(sets) / sizeof(Set);
+
+    double epsilons[] = { 1e-12, 1e-13, 1e-14, 1e-15 };
+    unsigned Neps = sizeof(epsilons) / sizeof(double);
+
+    for (unsigned i = 0; i < Nsets; i++) {
+        Set set = sets[i];
+        for (unsigned j = 0; j < Neps; j++) {
+            execute(f14, f14_result, Markov, epsilons[j], set.alpha, set.root);
+        }
+    }
 
     lprintl("----------------------------------------------\n");
     lclosel();
