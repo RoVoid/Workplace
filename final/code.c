@@ -12,8 +12,6 @@ double f14_result(double x) {
     return x * x;
 }
 
-double eps = 1e-15;
-
 typedef struct {
     double (*rule)(double (*)(double), double, double);
     int s;
