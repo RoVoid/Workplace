@@ -5,6 +5,8 @@
 
 #define LOG_FOLDER "./logs/"
 
+#define lclose(log) { _lclose(log); log = NULL; }
+
 typedef FILE* Log;
 
 Log lastLog;
@@ -22,7 +24,7 @@ Log lastLog;
  * @param name Имя лог-файла (без расширения).
  * @return Указатель на файл (Log), или NULL в случае ошибки.
  */
-Log lopen(const char* name) {
+inline Log lopen(const char* name) {
     char path[512];
     snprintf(path, sizeof(path), "%s%s%s", LOG_FOLDER, name, ".log");
 
@@ -38,7 +40,7 @@ Log lopen(const char* name) {
  * @param log Указатель на лог-файл.
  * @param format Форматная строка (как в printf).
  */
-void lprint(Log log, const char* format, ...) {
+inline void lprint(Log log, const char* format, ...) {
     if (!log) return;
 
     va_list args;
@@ -57,7 +59,7 @@ void lprint(Log log, const char* format, ...) {
  *
  * @param format Форматная строка (как в printf).
  */
-void lprintl(const char* format, ...) {
+inline void lprintl(const char* format, ...) {
     if (!lastLog) return;
 
     va_list args;
@@ -71,7 +73,7 @@ void lprintl(const char* format, ...) {
  *
  * @param log Указатель на лог-файл.
  */
-void lclose(Log log) {
+inline void _lclose(Log log) {
     if (log) {
         fclose(log);
         log = NULL;
@@ -81,7 +83,7 @@ void lclose(Log log) {
 /**
  * Закрывает последний открытый лог-файл.
  */
-void lclosel() {
+inline void lclosel() {
     if (lastLog) {
         fclose(lastLog);
         lastLog = NULL;
