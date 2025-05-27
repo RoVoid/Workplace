@@ -4,7 +4,5 @@
 
 int main() {
     srand(time(NULL));
-
-    while (getchar() != 'x')
-        printf(rand() % 2 ? "Coin\n" : "Bird\n");
+    while (getchar() != 'x') printf(rand() % 2 ? "Coin\n" : "Bird\n");
 }

@@ -55,7 +55,7 @@ void printMatrix(int i) {
     }
     else {
         for (unsigned k = 0; k < result.n * result.m; k++) {
-            printf("%6.3f ", result.array[k]);
+            printf("%8.5f ", result.array[k]);
             if (k % result.m == result.m - 1) printf("\n");
         }
         for (int k = 0; k < result.m; k++) printf("-------");

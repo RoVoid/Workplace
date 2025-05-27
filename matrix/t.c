@@ -10,6 +10,7 @@ long long factorial(int n) {
     }
     return fact;
 }
+
 void Hilbert(double** mas, int n) {
     int i, j;
     for (i = 0;i < n;i++) {
@@ -39,13 +40,6 @@ int main() {
     Hilbert(mas, n);
     for (int i = 0;i < n;i++) {
         for (int j = 0; j < n; j++) { fprintf(fp, "%10.6lf", mas[i][j]); }
-        fprintf(fp, "\n");
-    }
-    fprintf(fp, "Обратная матрица\n");
-    InverseHilbert(mas, n);
-
-    for (int i = 0;i < n;i++) {
-        for (int j = 0; j < n; j++) { fprintf(fp, "%10.6lf ", mas[i][j]); }
         fprintf(fp, "\n");
     }
     return 0;
