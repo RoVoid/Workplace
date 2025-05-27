@@ -19,14 +19,14 @@ int main() {
     FILE* file = fopen("matrix/gauss_in.txt", "r");
     if (!file) return -1;
 
-    unsigned n, m, i, j;
-    fscanf(file, "%u%u", &n, &m);
+    unsigned n, i, j;
+    fscanf(file, "%u", &n);
 
     double** a = (double**)malloc(n * sizeof(double*));
     if (!a) return -2;
 
     for (i = 0; i < n; i++) {
-        a[i] = (double*)malloc(m * sizeof(double));
+        a[i] = (double*)malloc((n + 1) * sizeof(double));
         if (!a[i]) {
             for (unsigned k = 0; k < i; k++) free(a[k]);
             free(a);
@@ -35,13 +35,13 @@ int main() {
     }
 
     for (i = 0; i < n; i++)
-        for (j = 0; j < m; j++)
+        for (j = 0; j < n + 1; j++)
             fscanf(file, "%lf", &a[i][j]);
     fclose(file);
 
     unsigned row = 0;
 
-    for (j = 0; j < m && row < n; j++) {
+    for (j = 0; j < n + 1 && row < n; j++) {
         // Поиск максимального по модулю элемента в столбце j, начиная с row
         unsigned maxRow = row;
         double maxAbs = dabs(a[maxRow][j]);
@@ -65,7 +65,7 @@ int main() {
 
         // Нормируем ступеньку
         double pivot = a[row][j];
-        for (unsigned k = j; k < m; k++) {
+        for (unsigned k = j; k < n + 1; k++) {
             a[row][k] /= pivot;
             if (dabs(a[row][k]) < EPS) a[row][k] = 0;
         }
@@ -74,7 +74,7 @@ int main() {
         for (i = 0; i < n; i++) {
             if (i == row) continue;
             double factor = a[i][j];
-            for (unsigned k = j; k < m; k++) {
+            for (unsigned k = j; k < n + 1; k++) {
                 a[i][k] -= factor * a[row][k];
                 if (dabs(a[i][k]) < EPS) a[i][k] = 0;
             }
@@ -84,12 +84,49 @@ int main() {
     }
 
     lopen("gauss");
+
+    lprintl("Ступенчатый вид матрицы:\n");
     for (i = 0; i < n; i++) {
-        for (j = 0; j < m; j++) {
+        for (j = 0; j < n; j++) {
             lprintl("%10.5lf ", a[i][j]);
         }
-        lprintl("\n");
+        lprintl("| %10.5lf\n", a[i][n]);
     }
+
+    int error = 0;
+    // Проверка на нулевые строки с ненулевым решением
+    for (i = 0; i < n; i++) {
+        unsigned p = n;
+        for (j = 0; j < n; j++) {
+            if (dabs(a[i][j]) > EPS) {
+                p = j;
+                break;
+            }
+        }
+        if (p == n && dabs(a[i][n]) > EPS) {
+            error = 1;
+            break;
+        }
+    }
+
+    lprintl("\n");
+
+    if (error) lprintl("Система несовместна\n");
+    else {
+        lprintl("Решение:\n");
+
+        for (j = 0; j < n; j++) {
+            double s = 0;
+            for (i = 0; i < n; i++) {
+                if (dabs(a[i][j] - 1) < EPS) {
+                    s = a[i][n];
+                    break;
+                }
+            }
+            lprintl(" x%u = %.10lf\n", j + 1, s);
+        }
+    }
+
     lclosel();
 
     for (i = 0; i < n; i++) free(a[i]);
