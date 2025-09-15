@@ -1,8 +1,9 @@
+.vscode
+.idea
 *.txt
 *.bat
-.vscode
+*.mmd
 build
 data
-part1
-robot/checker.cpp
-diskretka.c
+private
+.clang-format

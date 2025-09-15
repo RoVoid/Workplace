@@ -26,19 +26,19 @@ void clearMatrixs(char flag) {
 void inputMatrixs() {
     clearMatrixs(0);
     FILE* file = fopen("matrix/in.txt", "r");
-    unsigned i = 0, n, m;
+    unsigned i = -1, n, m;
     if (!file) {
         printf("File Problem\n");
         return;
     }
 
-    while (i < MATRIX_MAX_COUNT && fscanf(file, "%u%u", &n, &m) == 2) {
+    while (++i < MATRIX_MAX_COUNT && fscanf(file, "%u%u", &n, &m) == 2) {
         matrixs[i].n = n;
         matrixs[i].m = m;
         matrixs[i].array = (float*)malloc(n * m * sizeof(float));
         for (unsigned k = 0; k < n * m; k++)
             fscanf(file, "%f", &matrixs[i].array[k]);
-        i++;
+        // i++;
     }
 
     fclose(file);
@@ -84,8 +84,8 @@ int main() {
     printf("* - multiply by matrix\n");
     printf("m - multiply by number\n");
     printf("o - print matrix\n");
-    printf("x - exit");
-    printf("\n--------------------------\n\n");
+    printf("x - exit\n");
+    printf("--------------------------\n\n");
 
     char operation;
     while (1) {
