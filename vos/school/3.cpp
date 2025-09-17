@@ -1,6 +1,10 @@
 #include <iostream>
 #include <vector>
-using namespace std;
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::vector;
 
 int main() {
     int e, n;
@@ -9,25 +13,20 @@ int main() {
     vector<int> a(n + 2, 0);
     for (int i = 1; i <= n; i++) cin >> a[i];
 
-    int last = 0;
+    int p = 0;
 
-    for (int i = 1; i <= n; i++) {
-        int need = i - last;
-        if (e < need) {
+    for (int i = 1; i <= n + 1; i++) {
+        if (a[i] < 0) continue;
+        int move = i - p;
+        if (move > e) {
             cout << -1 << endl;
             return 0;
         }
-        e += -need + a[i];
-        last = i;
-        if (e < 0) {
-            cout << -1 << endl;
-            return 0;
-        }
+        e += a[i] - move;
+        p = i;
     }
 
-    cout << (e < 1 ? -1 : e) << endl;
+    cout << (p != n + 1 ? -1 : e) << endl;
 
     return 0;
 }
-
-// не решено
