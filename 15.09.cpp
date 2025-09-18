@@ -16,7 +16,8 @@ namespace test {
         }
 
         string fields[3];
-        short numbers[2];
+        short year;
+        float score;
 
         const char* msgs[5] = {"Surname", "Name", "Father", "Year", "Score"};
 
@@ -28,13 +29,17 @@ namespace test {
             fout << fields[i] << endl;
         }
 
-        for (int i = 0; i < 2; ++i) {
-            if (!(fin >> numbers[i])) {
-                cerr << "Fail " << msgs[i + 3] << "!" << endl;
-                return 1;
-            }
-            fout << numbers[i] << endl;
+        if (!(fin >> year)) {
+            cerr << "Fail " << msgs[3] << "!" << endl;
+            return 1;
         }
+        fout << year << endl;
+
+        if (!(fin >> score)) {
+            cerr << "Fail " << msgs[4] << "!" << endl;
+            return 1;
+        }
+        fout << score << endl;
 
         if (fin >> ws && !fin.eof()) {
             cerr << "Too many data!" << endl;
