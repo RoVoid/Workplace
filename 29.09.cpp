@@ -73,5 +73,11 @@ int main() {
     for (int i = 0; i < a.size(); ++i) cout << a.get(i) << ' ';
     cout << endl;
 
+    array b=a;
+
+    b.put(4, 5);
+    for (int i = 0; i < b.size(); ++i) cout << b.get(i) << ' ';
+    cout << endl;
+
     return 0;
 }
