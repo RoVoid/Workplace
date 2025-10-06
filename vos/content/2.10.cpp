@@ -13,18 +13,16 @@ int main(int argc, char** argv) {
 
     unsigned n;
     input >> n;
-
-    unsigned long long* a = new unsigned long long[n + 1];
-    a[0] = 1;
-
-    for (unsigned i = 1; i <= n; ++i) {
-        for (int j = i; j > 0; --j) a[j] = a[j] + a[j - 1];
-    }
+    if (n < 0) return 3;
 
     output << n + 1 << " ";
-    for (unsigned i = 0; i <= n; ++i) output << a[i] << " ";
-    output << std::flush;
 
-    delete[] a;
+    unsigned long long c = 1;
+    for (unsigned k = 0; k <= n; ++k) {
+        output << c << " ";
+        c = c * (n - k) / (k + 1);
+    }
+
+    output << std::flush;
     return 0;
 }
