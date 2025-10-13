@@ -15,7 +15,12 @@ int main(int argc, char** argv) {
 
     long long n, *a, i;
     input >> n;
-    if (n <= 0) return 3;
+    if (n < 0) return 3;
+
+    if (n == 0) {
+        output << 0 << std::flush;
+        return 0;
+    }
 
     a = new long long[n];
     for (i = 0; i < n; ++i)
