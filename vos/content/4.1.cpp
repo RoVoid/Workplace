@@ -13,16 +13,16 @@ int main(int argc, char** argv) {
     ofstream output(argv[2]);
     if (!input || !output) return 2;
 
-    long long n, *a, i;
-    input >> n;
-    if (n < 0) return 3;
+    unsigned long long n, i;
+    long double* a;
 
+    if (!(input >> n)) return 3;
     if (n == 0) {
         output << 0 << std::flush;
         return 0;
     }
 
-    a = new long long[n];
+    a = new long double[n];
     for (i = 0; i < n; ++i)
         if (!(input >> a[i])) {
             delete[] a;
