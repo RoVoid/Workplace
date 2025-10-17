@@ -1,0 +1,172 @@
+#include <iostream>
+#include <thread>
+#include <vector>
+#include <string>
+#include <cstring>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <fcntl.h>
+
+#define UDP_PORT 50000
+#define TCP_PORT 50001
+#define BROADCAST_ADDR "255.255.255.255"
+
+bool is_server = false;
+std::vector<int> clients;
+
+// ============================================================
+// UDP broadcast: ищем сервер
+// ============================================================
+std::string discover_server() {
+    int udp = socket(AF_INET, SOCK_DGRAM, 0);
+    int yes = 1;
+    setsockopt(udp, SOL_SOCKET, SO_BROADCAST, &yes, sizeof(yes));
+    struct sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(UDP_PORT);
+    addr.sin_addr.s_addr = inet_addr(BROADCAST_ADDR);
+
+    const char* msg = "DISCOVER_CHAT_SERVER";
+    sendto(udp, msg, strlen(msg), 0, (sockaddr*)&addr, sizeof(addr));
+
+    struct timeval tv{2, 0}; // таймаут 2 секунды
+    setsockopt(udp, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+
+    char buffer[64];
+    sockaddr_in from{};
+    socklen_t fromlen = sizeof(from);
+    int len = recvfrom(udp, buffer, sizeof(buffer) - 1, 0, (sockaddr*)&from, &fromlen);
+    close(udp);
+
+    if (len > 0) {
+        buffer[len] = 0;
+        return inet_ntoa(from.sin_addr);
+    }
+    return "";
+}
+
+// ============================================================
+// TCP сервер
+// ============================================================
+void handle_client(int client) {
+    char buf[1024];
+    int len;
+    while ((len = recv(client, buf, sizeof(buf) - 1, 0)) > 0) {
+        buf[len] = 0;
+        std::cout << buf << std::endl;
+        for (int c : clients)
+            if (c != client)
+                send(c, buf, len, 0);
+    }
+    close(client);
+}
+
+void run_server() {
+    is_server = true;
+    std::cout << "[*] Стали сервером\n";
+
+    // UDP отклик на запрос
+    std::thread([] {
+        int udp = socket(AF_INET, SOCK_DGRAM, 0);
+        int yes = 1;
+        setsockopt(udp, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+
+        sockaddr_in addr{};
+        addr.sin_family = AF_INET;
+        addr.sin_port = htons(UDP_PORT);
+        addr.sin_addr.s_addr = INADDR_ANY;
+        bind(udp, (sockaddr*)&addr, sizeof(addr));
+
+        char buf[64];
+        sockaddr_in from{};
+        socklen_t fromlen = sizeof(from);
+
+        while (true) {
+            int len = recvfrom(udp, buf, sizeof(buf) - 1, 0, (sockaddr*)&from, &fromlen);
+            if (len > 0) {
+                buf[len] = 0;
+                if (strcmp(buf, "DISCOVER_CHAT_SERVER") == 0) {
+                    const char* reply = "CHAT_SERVER_HERE";
+                    sendto(udp, reply, strlen(reply), 0, (sockaddr*)&from, fromlen);
+                }
+            }
+        }
+    }).detach();
+
+    // TCP сервер
+    int srv = socket(AF_INET, SOCK_STREAM, 0);
+    int yes = 1;
+    setsockopt(srv, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+    sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(TCP_PORT);
+    addr.sin_addr.s_addr = INADDR_ANY;
+    bind(srv, (sockaddr*)&addr, sizeof(addr));
+    listen(srv, 5);
+
+    std::thread([srv] {
+        while (true) {
+            int client = accept(srv, nullptr, nullptr);
+            clients.push_back(client);
+            std::thread(handle_client, client).detach();
+        }
+    }).detach();
+
+    // Ввод сообщений
+    std::string msg;
+    while (std::getline(std::cin, msg)) {
+        msg = "[Server] " + msg;
+        for (int c : clients)
+            send(c, msg.c_str(), msg.size(), 0);
+    }
+}
+
+// ============================================================
+// TCP клиент
+// ============================================================
+void run_client(const std::string& host) {
+    std::cout << "[*] Подключаемся к серверу: " << host << std::endl;
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(TCP_PORT);
+    inet_pton(AF_INET, host.c_str(), &addr.sin_addr);
+
+    if (connect(sock, (sockaddr*)&addr, sizeof(addr)) != 0) {
+        std::cerr << "Ошибка подключения\n";
+        return;
+    }
+
+    std::thread([sock] {
+        char buf[1024];
+        int len;
+        while ((len = recv(sock, buf, sizeof(buf) - 1, 0)) > 0) {
+            buf[len] = 0;
+            std::cout << "\r" << buf << "\n> " << std::flush;
+        }
+    }).detach();
+
+    std::string msg;
+    std::cout << "> ";
+    while (std::getline(std::cin, msg)) {
+        send(sock, msg.c_str(), msg.size(), 0);
+        std::cout << "> ";
+    }
+
+    close(sock);
+}
+
+// ============================================================
+// main()
+// ============================================================
+int main() {
+    std::string server_ip = discover_server();
+
+    if (server_ip.empty())
+        run_server();
+    else
+        run_client(server_ip);
+
+    return 0;
+}
