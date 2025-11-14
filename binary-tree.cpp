@@ -1,7 +1,10 @@
 #include <iostream>
 #include <queue>
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::nothrow;
+using std::queue;
 
 struct Node {
     int value;
@@ -52,6 +55,7 @@ class Tree {
             curr = curr->right;
         }
     }
+
     void show() const {
         cout << "{ ";
         if (anchor) {
