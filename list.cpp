@@ -4,27 +4,27 @@ using namespace std;
 
 #define uint unsigned
 
-struct Entry {
+struct Node {
     int value;
-    Entry *previous, *next;
+    Node *previous, *next;
 };
 
 class List {
-    Entry *start = nullptr, *last = nullptr;
+    Node *start = nullptr, *last = nullptr;
     int _size = 0;
 
     public:
     ~List() {
-        Entry* e = start;
+        Node* e = start;
         while (e) {
-            Entry* next = e->next;
+            Node* next = e->next;
             delete e;
             e = next;
         }
     }
 
     void push(const int& value) {
-        Entry* e = new Entry{value, last, nullptr};
+        Node* e = new Node{value, last, nullptr};
         if (!start) start = e;
         if (last) last->next = e;
         last = e;
@@ -33,7 +33,7 @@ class List {
 
     void pop() {
         if (!last) return;
-        Entry* e = last;
+        Node* e = last;
         last = last->previous;
         if (last) last->next = nullptr;
         else start = nullptr;
@@ -46,25 +46,38 @@ class List {
             push(value);
             return;
         }
-        Entry* e = start;
-        for (; index > 1; --index) e = e->next;
-        Entry* n = new Entry{value, e->previous, e};
+        Node* e = start;
+        for (; index > 0; --index) e = e->next;
+        Node* n = new Node{value, e->previous, e};
         if (e->previous) e->previous->next = n;
         else start = n;
         e->previous = n;
         ++_size;
     }
 
+    void remove(uint index) {
+        if (index >= size()) {
+            pop();
+            return;
+        }
+        Node* e = start;
+        for (; index > 0; --index) e = e->next;
+        e->previous->next = e->next;
+        e->next->previous = e->previous;
+        delete e;
+        --_size;
+    }
+
     int& operator[](uint index) {
         if (index >= size()) throw out_of_range("index");
-        Entry* e = start;
+        Node* e = start;
         for (; index > 1; --index) e = e->next;
         return e->value;
     }
 
     const int& operator[](uint index) const {
         if (index >= size()) throw out_of_range("index");
-        Entry* e = start;
+        Node* e = start;
         for (; index > 1; --index) e = e->next;
         return e->value;
     }
@@ -72,8 +85,8 @@ class List {
     int size() const { return _size; }
     bool empty() const { return _size == 0; }
 
-    void show() {
-        Entry* e = start;
+    void show() const {
+        Node* e = start;
         cout << '(' << size() << "){ ";
         while (e) {
             cout << e->value << ' ';
@@ -92,6 +105,10 @@ int main() {
     l1.pop();
     l1.show();
     l1[0] = 10;
+    l1.show();
+    l1.insert(-1, 5);
+    l1.show();
+    l1.remove(7);
     l1.show();
     return 0;
 }
