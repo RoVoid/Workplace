@@ -57,15 +57,10 @@ class Tree {
 
     unsigned find(const int& value) const {
         if (anchor) {
-            queue<Node*> nodes;
-            Node* curr;
-            nodes.push(anchor);
-            while (!nodes.empty()) {
-                curr = nodes.front();
+            Node* curr = anchor;
+            while (curr) {
                 if (curr->value == value) return curr->index;
-                nodes.pop();
-                if (curr->left) nodes.push(curr->left);
-                if (curr->right) nodes.push(curr->right);
+                curr = value < curr->value ? curr->left : curr->right;
             }
         }
         return 0;
