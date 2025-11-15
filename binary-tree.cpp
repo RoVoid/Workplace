@@ -8,12 +8,8 @@ using std::queue;
 
 struct Node {
     int value;
-    Node *left, *right;
-};
-
-struct NodePair {
     unsigned index;
-    Node* node;
+    Node *left, *right;
 };
 
 class Tree {
@@ -30,11 +26,12 @@ class Tree {
     ~Tree() { clear(anchor); }
 
     void push(const int& value) {
-        Node* node = new (nothrow) Node{value, nullptr, nullptr};
+        Node* node = new (nothrow) Node{value, 0, nullptr, nullptr};
         if (!node) exit(2);
 
         if (!anchor) {
             anchor = node;
+            anchor->index = 1;
             return;
         }
 
@@ -42,6 +39,7 @@ class Tree {
         while (1) {
             if (value <= curr->value) {
                 if (!curr->left) {
+                    node->index = curr->index * 2;
                     curr->left = node;
                     break;
                 }
@@ -49,6 +47,7 @@ class Tree {
                 continue;
             }
             if (!curr->right) {
+                node->index = curr->index * 2 + 1;
                 curr->right = node;
                 break;
             }
@@ -56,18 +55,34 @@ class Tree {
         }
     }
 
+    unsigned find(const int& value) const {
+        if (anchor) {
+            queue<Node*> nodes;
+            Node* curr;
+            nodes.push(anchor);
+            while (!nodes.empty()) {
+                curr = nodes.front();
+                if (curr->value == value) return curr->index;
+                nodes.pop();
+                if (curr->left) nodes.push(curr->left);
+                if (curr->right) nodes.push(curr->right);
+            }
+        }
+        return 0;
+    }
+
     void show() const {
         cout << "{ ";
         if (anchor) {
-            queue<NodePair> nodes;
-            NodePair curr;
-            nodes.push({1, anchor});
+            queue<Node*> nodes;
+            Node* curr;
+            nodes.push(anchor);
             while (!nodes.empty()) {
                 curr = nodes.front();
                 nodes.pop();
-                cout << curr.index << ':' << curr.node->value << ' ';
-                if (curr.node->left) nodes.push({curr.index * 2, curr.node->left});
-                if (curr.node->right) nodes.push({curr.index * 2 + 1, curr.node->right});
+                cout << curr->index << ':' << curr->value << ' ';
+                if (curr->left) nodes.push(curr->left);
+                if (curr->right) nodes.push(curr->right);
             }
         }
         cout << '}' << endl;
@@ -84,5 +99,6 @@ int main() {
     t.push(35);
     t.push(-5);
     t.show();
+    cout << t.find(-1) << endl;
     return 0;
 }
