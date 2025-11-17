@@ -64,6 +64,7 @@ class Tree {
             if (node->value == value) break;
             node = value < node->value ? node->left : node->right;
         }
+        if (!node || node->value != value) return;
 
         // Поиск максимального
         Node *max = node, *curr;
@@ -162,6 +163,8 @@ int main() {
     cout << t.find(-1) << endl;
     cout << "--------------\n";
     t.remove(3);
+    t.show();
+    t.remove(35);
     t.show();
     t.remove(35);
     t.show();
