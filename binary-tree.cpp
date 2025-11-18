@@ -22,6 +22,31 @@ class Tree {
         delete node;
     }
 
+    // Учитываю случай с корнем
+    void replaceInParent(Node* parent, Node* old, Node* _new) {
+        if (!parent) anchor = _new;
+        else if (parent->left == old) parent->left = _new;
+        else parent->right = _new;
+        if (_new) _new->parent = parent;
+    }
+
+    void childrenIndexing(Node* parent) {
+        std::queue<Node*> q;
+        q.push(parent);
+        while (!q.empty()) {
+            Node* c = q.front();
+            q.pop();
+            if (c->left) {
+                c->left->index = c->index * 2;
+                q.push(c->left);
+            }
+            if (c->right) {
+                c->right->index = c->index * 2 + 1;
+                q.push(c->right);
+            }
+        }
+    }
+
     public:
     ~Tree() { clear(anchor); }
 
@@ -58,68 +83,46 @@ class Tree {
     }
 
     void remove(const int& value) {
-        // Поиск удаляемого
         Node* node = anchor;
-        while (node) {
-            if (node->value == value) break;
+        Node* parent = nullptr;
+
+        // Поиск элемента
+        while (node && node->value != value) {
+            parent = node;
             node = value < node->value ? node->left : node->right;
         }
-        if (!node || node->value != value) return;
+        if (!node) return;
 
-        // Поиск максимального
-        Node *max = node, *curr;
-        queue<Node*> nodes;
-        nodes.push(max);
-        while (!nodes.empty()) {
-            curr = nodes.front();
-            nodes.pop();
-            if (!(curr->left && curr->right) && max->value <= curr->value) { max = curr; }
-            if (curr->left) nodes.push(curr->left);
-            if (curr->right) nodes.push(curr->right);
-        }
-        cout << "Node: " << node->index << ' ' << node->value << endl;
-        node->value = max->value;
-
-        cout << "Max: " << max->index << ' ' << max->value << endl;
-
-        // Удаление потомка
-        Node* del = nullptr;
-        if (max->left) del = max->left;
-        else if (max->right) del = max->right;
-        else {
-            (max->parent->left == max ? max->parent->left : max->parent->right) = nullptr;
-            delete max;
+        // Удаление если не родитель
+        if (!node->left && !node->right) {
+            replaceInParent(parent, node, nullptr);
+            delete node;
             return;
         }
 
-        cout << "Del: " << del->index << ' ' << del->value << endl;
-
-        max->value = del->value;
-        if (del->left) {
-            max->left = del->left;
-            del->left->parent = max;
+        // Удаление при одном потомке
+        if (!node->left || !node->right) {
+            Node* child = node->left ? node->left : node->right;
+            child->index = node->index;
+            replaceInParent(parent, node, child);
+            childrenIndexing(child);
+            delete node;
+            return;
         }
+
+        // Удаление при обоих
+        // Вместо поиска максимума беру минимум правого потомка (направо и до конца влево)
+        // Можно конечно начать слева потом до конца направо
+        Node* del = node->right;
+        while (del->left) del = del->left;
+        node->value = del->value;
+
+        replaceInParent(del->parent, del, del->right);
         if (del->right) {
-            max->right = del->right;
-            del->right->parent = max;
+            del->right->index = del->index;
+            childrenIndexing(del->right);
         }
-        (del->parent->left == del ? del->parent->left : del->parent->right) = nullptr;
         delete del;
-
-        // Изменяем индексы потомкам
-        nodes.push(max);
-        while (!nodes.empty()) {
-            curr = nodes.front();
-            nodes.pop();
-            if (curr->left) {
-                curr->left->index = curr->index * 2;
-                nodes.push(curr->left);
-            }
-            if (curr->right) {
-                curr->right->index = curr->index * 2 + 1;
-                nodes.push(curr->right);
-            }
-        }
     }
 
     unsigned find(const int& value) const {
@@ -168,5 +171,19 @@ int main() {
     t.show();
     t.remove(35);
     t.show();
+
+    Tree t1;
+    t1.push(5);
+    t1.show();
+    t1.remove(5);
+    t1.show();
+    t1.push(3);
+    t1.push(40);
+    t1.push(-1);
+    t1.push(4);
+    t1.show();
+    t1.remove(5);
+    t1.remove(3);
+    t1.show();
     return 0;
 }
