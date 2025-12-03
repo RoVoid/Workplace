@@ -61,16 +61,17 @@ class BitSet {
     }
 
     BitSet unions(const BitSet& other) const {
-        BitSet r(max > other.max ? max : other.max);
-        uint n = size < other.size ? size : other.size;
-        for (uint i = 0; i < n; i++) r.a[i] = a[i] | other.a[i];
+        if (size < other.size) return other.unions(*this);
+        BitSet r(max);
+        for (unsigned i = 0; i < other.size; i++) r.a[i] = a[i] | other.a[i];
+        for (unsigned i = other.size; i < size; i++) r.a[i] = a[i];
         return r;
     }
 
     BitSet intersections(const BitSet& other) const {
-        BitSet r(max < other.max ? max : other.max);
-        uint n = size < other.size ? size : other.size;
-        for (uint i = 0; i < n; i++) r.a[i] = a[i] & other.a[i];
+        if (size > other.size) return other.intersections(*this);
+        BitSet r(max);
+        for (uint i = 0; i < size; i++) r.a[i] = a[i] & other.a[i];
         return r;
     }
 
@@ -85,12 +86,13 @@ class BitSet {
 };
 
 int main() {
-    BitSet s1(36);
+    BitSet s1(1000);
     cout << "Add: ";
     s1.add(1);
     s1.add(31);
     s1.add(7);
     s1.add(35);
+    s1.add(99);
     s1.show();
     cout << "Remove: ";
     s1.remove(7);
@@ -102,7 +104,9 @@ int main() {
     s2.show();
     cout << "Union: ";
     s1.unions(s2).show();  // Объединение
+    s2.unions(s1).show();
     cout << "Inter.: ";
     s1.intersections(s2).show();  // Пересечение
+    s2.intersections(s1).show();
     return 0;
 }
