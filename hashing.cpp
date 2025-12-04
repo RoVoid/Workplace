@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 
-
 class HashSet {
     private:
     int p;                                      // число классов
@@ -54,6 +53,55 @@ class HashSet {
         }
     }
 };
+
+// class HashAlphabet {
+//     const int p = 26;
+//     std::vector<std::list<std::string>> table;
+//
+//     int hash(const std::string& s) const {
+//         int sum = 0;
+//         for (unsigned char c : s) sum += c;
+//         return sum % p;
+//     }
+//
+//     public:
+//
+//     // Добавление строки
+//     void insert(const std::string& s) {
+//         int h = hash(s);
+//         for (const auto& x : table[h])
+//             if (x == s) return;  // множество: дубликаты не храним
+//         table[h].push_back(s);
+//     }
+//
+//     // Удаление строки
+//     void erase(const std::string& s) {
+//         int h = hash(s);
+//         table[h].remove(s);
+//     }
+//
+//     // Поиск строки
+//     bool find(const std::string& s) const {
+//         int h = hash(s);
+//         for (const auto& x : table[h])
+//             if (x == s) return true;
+//         return false;
+//     }
+//
+//     // Вывод таблицы
+//     void print() const {
+//         for (int i = 0; i < p; ++i) {
+//             std::cout << i << ": ";
+//             bool first = true;
+//             for (const auto& x : table[i]) {
+//                 if (!first) std::cout << ", ";
+//                 std::cout << x;
+//                 first = false;
+//             }
+//             std::cout << "\n";
+//         }
+//     }
+// };
 
 int main() {
     int p;
