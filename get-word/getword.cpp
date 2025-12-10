@@ -44,8 +44,10 @@ class GetWord {
         sentence->tail = word;
     }
 
+    inline static bool is_space(char c) { return c == ' ' || c == '\n' || c == '\t'; }
     inline static bool is_delim(char c) {
-        return c == ' ' || c == '\n' || c == '\t' || c == ',' || c == '"' || c == '\'';
+        return c == ',' || c == '"' || c == '\'' || c == '(' || c == ')' || c == '=' || c == '+' || c == '-' ||
+            c == ';' || c == '!';
     }
 
     public:
@@ -61,10 +63,10 @@ class GetWord {
         char c;
         bool checkEnd = false;
         while (f.get(c)) {
-            if (is_delim(c)) {
+            if (is_space(c) || is_delim(c)) {
                 push_word_to_sentence(str, s);
                 str.clear();
-                if (checkEnd && s->count) {
+                if (is_space(c) && checkEnd && s->count) {
                     ++sCount;
                     Sentence* s1 = new (nothrow) Sentence{nullptr, nullptr, 0};
                     if (!s1) exit(4);

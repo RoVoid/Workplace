@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Красное-Чёрное Дерево</title>
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+mermaid.initialize({startOnLoad:true, flowchart:{useMaxWidth:false, curve:'linear', nodeSpacing:30, rankSpacing:30}});
+</script>
+<style>
+body { display: flex; flex-wrap: wrap; gap: 20px; background: #212121; color: white; }
+.tree { display: flex; flex-direction: column; background: #333; padding: 10px; border-radius: 10px; width: min-content; height: min-content; }
+.mermaid svg path {  stroke: white !important; }
+.mermaid .node rect { fill: #212121 !important; stroke: white !important; }
+.mermaid .nodeLabel { color: white !important; }
+span { text-align: center; margin-bottom: 5px; }
+</style>
+</head>
+<body>
+<div class="tree">
+<span>Add: 13</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]~~~2:::hidden
+1["13"]~~~3:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 17</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]~~~2:::hidden
+1["13"]---3["17"]:::red
+3["17"]~~~6:::hidden
+3["17"]~~~7:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 8</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]:::red
+1["13"]---3["17"]:::red
+2["8"]~~~4:::hidden
+2["8"]~~~5:::hidden
+3["17"]~~~6:::hidden
+3["17"]~~~7:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 1</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]
+1["13"]---3["17"]
+2["8"]---4["1"]:::red
+2["8"]~~~5:::hidden
+3["17"]~~~6:::hidden
+3["17"]~~~7:::hidden
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 11</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]
+1["13"]---3["17"]
+2["8"]---4["1"]:::red
+2["8"]---5["11"]:::red
+3["17"]~~~6:::hidden
+3["17"]~~~7:::hidden
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["11"]~~~10:::hidden
+5["11"]~~~11:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 15</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]
+1["13"]---3["17"]
+2["8"]---4["1"]:::red
+2["8"]---5["11"]:::red
+3["17"]---6["15"]:::red
+3["17"]~~~7:::hidden
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["11"]~~~10:::hidden
+5["11"]~~~11:::hidden
+6["15"]~~~12:::hidden
+6["15"]~~~13:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 25</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]
+1["13"]---3["17"]
+2["8"]---4["1"]:::red
+2["8"]---5["11"]:::red
+3["17"]---6["15"]:::red
+3["17"]---7["25"]:::red
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["11"]~~~10:::hidden
+5["11"]~~~11:::hidden
+6["15"]~~~12:::hidden
+6["15"]~~~13:::hidden
+7["25"]~~~14:::hidden
+7["25"]~~~15:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 22</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]
+1["13"]---3["17"]:::red
+2["8"]---4["1"]:::red
+2["8"]---5["11"]:::red
+3["17"]---6["15"]
+3["17"]---7["25"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["11"]~~~10:::hidden
+5["11"]~~~11:::hidden
+6["15"]~~~12:::hidden
+6["15"]~~~13:::hidden
+7["25"]---14["22"]:::red
+7["25"]~~~15:::hidden
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 27</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]
+1["13"]---3["17"]:::red
+2["8"]---4["1"]:::red
+2["8"]---5["11"]:::red
+3["17"]---6["15"]
+3["17"]---7["25"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["11"]~~~10:::hidden
+5["11"]~~~11:::hidden
+6["15"]~~~12:::hidden
+6["15"]~~~13:::hidden
+7["25"]---14["22"]:::red
+7["25"]---15["27"]:::red
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 6</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]:::red
+1["13"]---3["17"]:::red
+2["8"]---4["1"]
+2["8"]---5["11"]
+3["17"]---6["15"]
+3["17"]---7["25"]
+4["1"]~~~8:::hidden
+4["1"]---9["6"]:::red
+5["11"]~~~10:::hidden
+5["11"]~~~11:::hidden
+6["15"]~~~12:::hidden
+6["15"]~~~13:::hidden
+7["25"]---14["22"]:::red
+7["25"]---15["27"]:::red
+9["6"]~~~18:::hidden
+9["6"]~~~19:::hidden
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 14</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]:::red
+1["13"]---3["17"]:::red
+2["8"]---4["1"]
+2["8"]---5["11"]
+3["17"]---6["15"]
+3["17"]---7["25"]
+4["1"]~~~8:::hidden
+4["1"]---9["6"]:::red
+5["11"]~~~10:::hidden
+5["11"]~~~11:::hidden
+6["15"]---12["14"]:::red
+6["15"]~~~13:::hidden
+7["25"]---14["22"]:::red
+7["25"]---15["27"]:::red
+9["6"]~~~18:::hidden
+9["6"]~~~19:::hidden
+12["14"]~~~24:::hidden
+12["14"]~~~25:::hidden
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 9</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]:::red
+1["13"]---3["17"]:::red
+2["8"]---4["1"]
+2["8"]---5["11"]
+3["17"]---6["15"]
+3["17"]---7["25"]
+4["1"]~~~8:::hidden
+4["1"]---9["6"]:::red
+5["11"]---10["9"]:::red
+5["11"]~~~11:::hidden
+6["15"]---12["14"]:::red
+6["15"]~~~13:::hidden
+7["25"]---14["22"]:::red
+7["25"]---15["27"]:::red
+9["6"]~~~18:::hidden
+9["6"]~~~19:::hidden
+10["9"]~~~20:::hidden
+10["9"]~~~21:::hidden
+12["14"]~~~24:::hidden
+12["14"]~~~25:::hidden
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 3</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]:::red
+1["13"]---3["17"]:::red
+2["8"]---4["3"]
+2["8"]---5["11"]
+3["17"]---6["15"]
+3["17"]---7["25"]
+4["3"]---8["1"]:::red
+4["3"]---9["6"]:::red
+5["11"]---10["9"]:::red
+5["11"]~~~11:::hidden
+6["15"]---12["14"]:::red
+6["15"]~~~13:::hidden
+7["25"]---14["22"]:::red
+7["25"]---15["27"]:::red
+8["1"]~~~16:::hidden
+8["1"]~~~17:::hidden
+9["6"]~~~18:::hidden
+9["6"]~~~19:::hidden
+10["9"]~~~20:::hidden
+10["9"]~~~21:::hidden
+12["14"]~~~24:::hidden
+12["14"]~~~25:::hidden
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 2</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]
+1["13"]---3["17"]
+2["8"]---4["3"]:::red
+2["8"]---5["11"]
+3["17"]---6["15"]
+3["17"]---7["25"]
+4["3"]---8["1"]
+4["3"]---9["6"]
+5["11"]---10["9"]:::red
+5["11"]~~~11:::hidden
+6["15"]---12["14"]:::red
+6["15"]~~~13:::hidden
+7["25"]---14["22"]:::red
+7["25"]---15["27"]:::red
+8["1"]~~~16:::hidden
+8["1"]---17["2"]:::red
+9["6"]~~~18:::hidden
+9["6"]~~~19:::hidden
+10["9"]~~~20:::hidden
+10["9"]~~~21:::hidden
+12["14"]~~~24:::hidden
+12["14"]~~~25:::hidden
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+17["2"]~~~34:::hidden
+17["2"]~~~35:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 2</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]
+1["13"]---3["17"]
+2["8"]---4["3"]:::red
+2["8"]---5["11"]
+3["17"]---6["15"]
+3["17"]---7["25"]
+4["3"]---8["1"]
+4["3"]---9["6"]
+5["11"]---10["9"]:::red
+5["11"]~~~11:::hidden
+6["15"]---12["14"]:::red
+6["15"]~~~13:::hidden
+7["25"]---14["22"]:::red
+7["25"]---15["27"]:::red
+8["1"]~~~16:::hidden
+8["1"]~~~17:::hidden
+9["6"]~~~18:::hidden
+9["6"]~~~19:::hidden
+10["9"]~~~20:::hidden
+10["9"]~~~21:::hidden
+12["14"]~~~24:::hidden
+12["14"]~~~25:::hidden
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 14</span>
+<div class="mermaid" align="center">graph TD;
+1["13"]---2["8"]
+1["13"]---3["17"]
+2["8"]---4["3"]:::red
+2["8"]---5["11"]
+3["17"]---6["15"]
+3["17"]---7["25"]
+4["3"]---8["1"]
+4["3"]---9["6"]
+5["11"]---10["9"]:::red
+5["11"]~~~11:::hidden
+6["15"]~~~12:::hidden
+6["15"]~~~13:::hidden
+7["25"]---14["22"]:::red
+7["25"]---15["27"]:::red
+8["1"]~~~16:::hidden
+8["1"]~~~17:::hidden
+9["6"]~~~18:::hidden
+9["6"]~~~19:::hidden
+10["9"]~~~20:::hidden
+10["9"]~~~21:::hidden
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 13</span>
+<div class="mermaid" align="center">graph TD;
+1["15"]---2["8"]
+1["15"]---3["17"]
+2["8"]---4["3"]:::red
+2["8"]---5["11"]
+3["17"]~~~6:::hidden
+3["17"]---7["25"]
+4["3"]---8["1"]
+4["3"]---9["6"]
+5["11"]---10["9"]:::red
+5["11"]~~~11:::hidden
+7["25"]---14["22"]:::red
+7["25"]---15["27"]:::red
+8["1"]~~~16:::hidden
+8["1"]~~~17:::hidden
+9["6"]~~~18:::hidden
+9["6"]~~~19:::hidden
+10["9"]~~~20:::hidden
+10["9"]~~~21:::hidden
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 15</span>
+<div class="mermaid" align="center">graph TD;
+1["8"]---2["3"]
+1["8"]---3["17"]
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["17"]---6["11"]
+3["17"]---7["25"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["11"]---12["9"]:::red
+6["11"]~~~13:::hidden
+7["25"]---14["22"]:::red
+7["25"]---15["27"]:::red
+12["9"]~~~24:::hidden
+12["9"]~~~25:::hidden
+14["22"]~~~28:::hidden
+14["22"]~~~29:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 17</span>
+<div class="mermaid" align="center">graph TD;
+1["8"]---2["3"]
+1["8"]---3["22"]
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["22"]---6["11"]
+3["22"]---7["25"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["11"]---12["9"]:::red
+6["11"]~~~13:::hidden
+7["25"]~~~14:::hidden
+7["25"]---15["27"]:::red
+12["9"]~~~24:::hidden
+12["9"]~~~25:::hidden
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 8</span>
+<div class="mermaid" align="center">graph TD;
+1["9"]---2["3"]
+1["9"]---3["22"]
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["22"]---6["11"]
+3["22"]---7["25"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["11"]~~~12:::hidden
+6["11"]~~~13:::hidden
+7["25"]~~~14:::hidden
+7["25"]---15["27"]:::red
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 9</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["22"]
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["22"]~~~6:::hidden
+3["22"]---7["25"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+7["25"]~~~14:::hidden
+7["25"]---15["27"]:::red
+15["27"]~~~30:::hidden
+15["27"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 35</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["22"]
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["22"]~~~6:::hidden
+3["22"]---7["27"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+7["27"]---14["25"]:::red
+7["27"]---15["35"]:::red
+14["25"]~~~28:::hidden
+14["25"]~~~29:::hidden
+15["35"]~~~30:::hidden
+15["35"]~~~31:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 57</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["22"]
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["22"]~~~6:::hidden
+3["22"]---7["27"]:::red
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+7["27"]---14["25"]
+7["27"]---15["35"]
+14["25"]~~~28:::hidden
+14["25"]~~~29:::hidden
+15["35"]~~~30:::hidden
+15["35"]---31["57"]:::red
+31["57"]~~~62:::hidden
+31["57"]~~~63:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 214</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["22"]
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["22"]~~~6:::hidden
+3["22"]---7["27"]:::red
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+7["27"]---14["25"]
+7["27"]---15["57"]
+14["25"]~~~28:::hidden
+14["25"]~~~29:::hidden
+15["57"]---30["35"]:::red
+15["57"]---31["214"]:::red
+30["35"]~~~60:::hidden
+30["35"]~~~61:::hidden
+31["214"]~~~62:::hidden
+31["214"]~~~63:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 86</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["27"]
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["27"]---6["22"]:::red
+3["27"]---7["57"]:::red
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["22"]~~~12:::hidden
+6["22"]---13["25"]
+7["57"]---14["35"]
+7["57"]---15["214"]
+13["25"]~~~26:::hidden
+13["25"]~~~27:::hidden
+14["35"]~~~28:::hidden
+14["35"]~~~29:::hidden
+15["214"]---30["86"]:::red
+15["214"]~~~31:::hidden
+30["86"]~~~60:::hidden
+30["86"]~~~61:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 234</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["27"]
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["27"]---6["22"]:::red
+3["27"]---7["57"]:::red
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["22"]~~~12:::hidden
+6["22"]---13["25"]
+7["57"]---14["35"]
+7["57"]---15["214"]
+13["25"]~~~26:::hidden
+13["25"]~~~27:::hidden
+14["35"]~~~28:::hidden
+14["35"]~~~29:::hidden
+15["214"]---30["86"]:::red
+15["214"]---31["234"]:::red
+30["86"]~~~60:::hidden
+30["86"]~~~61:::hidden
+31["234"]~~~62:::hidden
+31["234"]~~~63:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 232</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["27"]:::red
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["27"]---6["22"]
+3["27"]---7["57"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["22"]~~~12:::hidden
+6["22"]---13["25"]
+7["57"]---14["35"]
+7["57"]---15["214"]:::red
+13["25"]~~~26:::hidden
+13["25"]~~~27:::hidden
+14["35"]~~~28:::hidden
+14["35"]~~~29:::hidden
+15["214"]---30["86"]
+15["214"]---31["234"]
+30["86"]~~~60:::hidden
+30["86"]~~~61:::hidden
+31["234"]---62["232"]:::red
+31["234"]~~~63:::hidden
+62["232"]~~~124:::hidden
+62["232"]~~~125:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 12</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["27"]:::red
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["27"]---6["22"]
+3["27"]---7["57"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["22"]---12["12"]:::red
+6["22"]---13["25"]
+7["57"]---14["35"]
+7["57"]---15["214"]:::red
+12["12"]~~~24:::hidden
+12["12"]~~~25:::hidden
+13["25"]~~~26:::hidden
+13["25"]~~~27:::hidden
+14["35"]~~~28:::hidden
+14["35"]~~~29:::hidden
+15["214"]---30["86"]
+15["214"]---31["234"]
+30["86"]~~~60:::hidden
+30["86"]~~~61:::hidden
+31["234"]---62["232"]:::red
+31["234"]~~~63:::hidden
+62["232"]~~~124:::hidden
+62["232"]~~~125:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 32435</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["27"]:::red
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["27"]---6["22"]
+3["27"]---7["57"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["22"]---12["12"]:::red
+6["22"]---13["25"]
+7["57"]---14["35"]
+7["57"]---15["214"]:::red
+12["12"]~~~24:::hidden
+12["12"]~~~25:::hidden
+13["25"]~~~26:::hidden
+13["25"]~~~27:::hidden
+14["35"]~~~28:::hidden
+14["35"]~~~29:::hidden
+15["214"]---30["86"]
+15["214"]---31["234"]
+30["86"]~~~60:::hidden
+30["86"]~~~61:::hidden
+31["234"]---62["232"]:::red
+31["234"]---63["32435"]:::red
+62["232"]~~~124:::hidden
+62["232"]~~~125:::hidden
+63["32435"]~~~126:::hidden
+63["32435"]~~~127:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 546</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["27"]:::red
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["27"]---6["22"]
+3["27"]---7["214"]
+4["1"]~~~8:::hidden
+4["1"]~~~9:::hidden
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["22"]---12["12"]:::red
+6["22"]---13["25"]
+7["214"]---14["57"]:::red
+7["214"]---15["234"]:::red
+12["12"]~~~24:::hidden
+12["12"]~~~25:::hidden
+13["25"]~~~26:::hidden
+13["25"]~~~27:::hidden
+14["57"]---28["35"]
+14["57"]---29["86"]
+15["234"]---30["232"]
+15["234"]---31["32435"]
+28["35"]~~~56:::hidden
+28["35"]~~~57:::hidden
+29["86"]~~~58:::hidden
+29["86"]~~~59:::hidden
+30["232"]~~~60:::hidden
+30["232"]~~~61:::hidden
+31["32435"]---62["546"]:::red
+31["32435"]~~~63:::hidden
+62["546"]~~~124:::hidden
+62["546"]~~~125:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 2</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["27"]:::red
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["27"]---6["22"]
+3["27"]---7["214"]
+4["1"]~~~8:::hidden
+4["1"]---9["2"]:::red
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["22"]---12["12"]:::red
+6["22"]---13["25"]
+7["214"]---14["57"]:::red
+7["214"]---15["234"]:::red
+9["2"]~~~18:::hidden
+9["2"]~~~19:::hidden
+12["12"]~~~24:::hidden
+12["12"]~~~25:::hidden
+13["25"]~~~26:::hidden
+13["25"]~~~27:::hidden
+14["57"]---28["35"]
+14["57"]---29["86"]
+15["234"]---30["232"]
+15["234"]---31["32435"]
+28["35"]~~~56:::hidden
+28["35"]~~~57:::hidden
+29["86"]~~~58:::hidden
+29["86"]~~~59:::hidden
+30["232"]~~~60:::hidden
+30["232"]~~~61:::hidden
+31["32435"]---62["546"]:::red
+31["32435"]~~~63:::hidden
+62["546"]~~~124:::hidden
+62["546"]~~~125:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 214</span>
+<div class="mermaid" align="center">graph TD;
+1["11"]---2["3"]
+1["11"]---3["27"]:::red
+2["3"]---4["1"]
+2["3"]---5["6"]
+3["27"]---6["22"]
+3["27"]---7["232"]
+4["1"]~~~8:::hidden
+4["1"]---9["2"]:::red
+5["6"]~~~10:::hidden
+5["6"]~~~11:::hidden
+6["22"]---12["12"]:::red
+6["22"]---13["25"]
+7["232"]---14["57"]:::red
+7["232"]---15["234"]:::red
+9["2"]~~~18:::hidden
+9["2"]~~~19:::hidden
+12["12"]~~~24:::hidden
+12["12"]~~~25:::hidden
+13["25"]~~~26:::hidden
+13["25"]~~~27:::hidden
+14["57"]---28["35"]
+14["57"]---29["86"]
+15["234"]~~~30:::hidden
+15["234"]---31["32435"]
+28["35"]~~~56:::hidden
+28["35"]~~~57:::hidden
+29["86"]~~~58:::hidden
+29["86"]~~~59:::hidden
+31["32435"]---62["546"]:::red
+31["32435"]~~~63:::hidden
+62["546"]~~~124:::hidden
+62["546"]~~~125:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+
+</body>
+</html>
