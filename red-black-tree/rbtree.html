@@ -18,27 +18,307 @@ span { text-align: center; margin-bottom: 5px; }
 </head>
 <body>
 <div class="tree">
+<span>Add: 55</span>
 <div class="mermaid" align="center">graph TD;
-1["4"]---2["3"]:::red
-1["4"]---3["5"]:::red
-2["3"]---4["0"]
-2["3"]---5["4"]
-3["5"]---6["4"]
-3["5"]---7["6"]
-4["0"]---8["0"]:::red
-4["0"]---9["1"]:::red
-5["4"]~~~10:::hidden
-5["4"]~~~11:::hidden
-6["4"]~~~12:::hidden
-6["4"]---13["4"]:::red
-7["6"]~~~14:::hidden
-7["6"]~~~15:::hidden
-8["0"]~~~16:::hidden
-8["0"]~~~17:::hidden
-9["1"]~~~18:::hidden
-9["1"]~~~19:::hidden
-13["4"]~~~26:::hidden
-13["4"]~~~27:::hidden
+1["55"]~~~2:::hidden
+1["55"]~~~3:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 25</span>
+<div class="mermaid" align="center">graph TD;
+1["55"]---2["25"]:::red
+1["55"]~~~3:::hidden
+2["25"]~~~4:::hidden
+2["25"]~~~5:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 75</span>
+<div class="mermaid" align="center">graph TD;
+1["55"]---2["25"]:::red
+1["55"]---3["75"]:::red
+2["25"]~~~4:::hidden
+2["25"]~~~5:::hidden
+3["75"]~~~6:::hidden
+3["75"]~~~7:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 15</span>
+<div class="mermaid" align="center">graph TD;
+1["55"]---2["25"]
+1["55"]---3["75"]
+2["25"]---4["15"]:::red
+2["25"]~~~5:::hidden
+3["75"]~~~6:::hidden
+3["75"]~~~7:::hidden
+4["15"]~~~8:::hidden
+4["15"]~~~9:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 35</span>
+<div class="mermaid" align="center">graph TD;
+1["55"]---2["25"]
+1["55"]---3["75"]
+2["25"]---4["15"]:::red
+2["25"]---5["35"]:::red
+3["75"]~~~6:::hidden
+3["75"]~~~7:::hidden
+4["15"]~~~8:::hidden
+4["15"]~~~9:::hidden
+5["35"]~~~10:::hidden
+5["35"]~~~11:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 65</span>
+<div class="mermaid" align="center">graph TD;
+1["55"]---2["25"]
+1["55"]---3["75"]
+2["25"]---4["15"]:::red
+2["25"]---5["35"]:::red
+3["75"]---6["65"]:::red
+3["75"]~~~7:::hidden
+4["15"]~~~8:::hidden
+4["15"]~~~9:::hidden
+5["35"]~~~10:::hidden
+5["35"]~~~11:::hidden
+6["65"]~~~12:::hidden
+6["65"]~~~13:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 85</span>
+<div class="mermaid" align="center">graph TD;
+1["55"]---2["25"]
+1["55"]---3["75"]
+2["25"]---4["15"]:::red
+2["25"]---5["35"]:::red
+3["75"]---6["65"]:::red
+3["75"]---7["85"]:::red
+4["15"]~~~8:::hidden
+4["15"]~~~9:::hidden
+5["35"]~~~10:::hidden
+5["35"]~~~11:::hidden
+6["65"]~~~12:::hidden
+6["65"]~~~13:::hidden
+7["85"]~~~14:::hidden
+7["85"]~~~15:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 30</span>
+<div class="mermaid" align="center">graph TD;
+1["55"]---2["25"]:::red
+1["55"]---3["75"]
+2["25"]---4["15"]
+2["25"]---5["35"]
+3["75"]---6["65"]:::red
+3["75"]---7["85"]:::red
+4["15"]~~~8:::hidden
+4["15"]~~~9:::hidden
+5["35"]---10["30"]:::red
+5["35"]~~~11:::hidden
+6["65"]~~~12:::hidden
+6["65"]~~~13:::hidden
+7["85"]~~~14:::hidden
+7["85"]~~~15:::hidden
+10["30"]~~~20:::hidden
+10["30"]~~~21:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 45</span>
+<div class="mermaid" align="center">graph TD;
+1["55"]---2["25"]:::red
+1["55"]---3["75"]
+2["25"]---4["15"]
+2["25"]---5["35"]
+3["75"]---6["65"]:::red
+3["75"]---7["85"]:::red
+4["15"]~~~8:::hidden
+4["15"]~~~9:::hidden
+5["35"]---10["30"]:::red
+5["35"]---11["45"]:::red
+6["65"]~~~12:::hidden
+6["65"]~~~13:::hidden
+7["85"]~~~14:::hidden
+7["85"]~~~15:::hidden
+10["30"]~~~20:::hidden
+10["30"]~~~21:::hidden
+11["45"]~~~22:::hidden
+11["45"]~~~23:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Add: 67</span>
+<div class="mermaid" align="center">graph TD;
+1["55"]---2["25"]:::red
+1["55"]---3["75"]:::red
+2["25"]---4["15"]
+2["25"]---5["35"]
+3["75"]---6["65"]
+3["75"]---7["85"]
+4["15"]~~~8:::hidden
+4["15"]~~~9:::hidden
+5["35"]---10["30"]:::red
+5["35"]---11["45"]:::red
+6["65"]~~~12:::hidden
+6["65"]---13["67"]:::red
+7["85"]~~~14:::hidden
+7["85"]~~~15:::hidden
+10["30"]~~~20:::hidden
+10["30"]~~~21:::hidden
+11["45"]~~~22:::hidden
+11["45"]~~~23:::hidden
+13["67"]~~~26:::hidden
+13["67"]~~~27:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 35</span>
+<div class="mermaid" align="center">graph TD;
+1["55"]---2["25"]:::red
+1["55"]---3["75"]:::red
+2["25"]---4["15"]
+2["25"]---5["45"]
+3["75"]---6["65"]
+3["75"]---7["85"]
+4["15"]~~~8:::hidden
+4["15"]~~~9:::hidden
+5["45"]---10["30"]:::red
+5["45"]~~~11:::hidden
+6["65"]~~~12:::hidden
+6["65"]---13["67"]:::red
+7["85"]~~~14:::hidden
+7["85"]~~~15:::hidden
+10["30"]~~~20:::hidden
+10["30"]~~~21:::hidden
+13["67"]~~~26:::hidden
+13["67"]~~~27:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 15</span>
+<div class="mermaid" align="center">graph TD;
+1["75"]---2["65"]:::red
+1["75"]---3["85"]
+2["65"]---4["55"]
+2["65"]---5["67"]
+3["85"]~~~6:::hidden
+3["85"]~~~7:::hidden
+4["55"]---8["25"]:::red
+4["55"]~~~9:::hidden
+5["67"]~~~10:::hidden
+5["67"]~~~11:::hidden
+8["25"]~~~16:::hidden
+8["25"]---17["45"]
+17["45"]---34["30"]:::red
+17["45"]~~~35:::hidden
+34["30"]~~~68:::hidden
+34["30"]~~~69:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 67</span>
+<div class="mermaid" align="center">graph TD;
+1["75"]---2["65"]:::red
+1["75"]---3["85"]:::red
+2["65"]---4["55"]
+2["65"]~~~5:::hidden
+3["85"]~~~6:::hidden
+3["85"]~~~7:::hidden
+4["55"]---8["25"]:::red
+4["55"]~~~9:::hidden
+8["25"]~~~16:::hidden
+8["25"]---17["45"]
+17["45"]---34["30"]:::red
+17["45"]~~~35:::hidden
+34["30"]~~~68:::hidden
+34["30"]~~~69:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 25</span>
+<div class="mermaid" align="center">graph TD;
+1["75"]---2["65"]:::red
+1["75"]---3["85"]:::red
+2["65"]---4["55"]
+2["65"]~~~5:::hidden
+3["85"]~~~6:::hidden
+3["85"]~~~7:::hidden
+4["55"]---8["45"]
+4["55"]~~~9:::hidden
+8["45"]---16["30"]:::red
+8["45"]~~~17:::hidden
+16["30"]~~~32:::hidden
+16["30"]~~~33:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 85</span>
+<div class="mermaid" align="center">graph TD;
+1["75"]---2["65"]:::red
+1["75"]~~~3:::hidden
+2["65"]---4["55"]
+2["65"]~~~5:::hidden
+4["55"]---8["45"]
+4["55"]~~~9:::hidden
+8["45"]---16["30"]:::red
+8["45"]~~~17:::hidden
+16["30"]~~~32:::hidden
+16["30"]~~~33:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 30</span>
+<div class="mermaid" align="center">graph TD;
+1["75"]---2["65"]:::red
+1["75"]~~~3:::hidden
+2["65"]---4["55"]
+2["65"]~~~5:::hidden
+4["55"]---8["45"]
+4["55"]~~~9:::hidden
+8["45"]~~~16:::hidden
+8["45"]~~~17:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 45</span>
+<div class="mermaid" align="center">graph TD;
+1["75"]---2["65"]:::red
+1["75"]~~~3:::hidden
+2["65"]---4["55"]
+2["65"]~~~5:::hidden
+4["55"]~~~8:::hidden
+4["55"]~~~9:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 65</span>
+<div class="mermaid" align="center">graph TD;
+1["75"]---2["55"]
+1["75"]~~~3:::hidden
+2["55"]~~~4:::hidden
+2["55"]~~~5:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 55</span>
+<div class="mermaid" align="center">graph TD;
+1["75"]~~~2:::hidden
+1["75"]~~~3:::hidden
+classDef hidden display: none; classDef red fill:red,color:#000;</div>
+</div>
+<div class="tree">
+<span>Remove: 75</span>
+<div class="tree">
+<span>Add: 0</span>
+<div class="mermaid" align="center">graph TD;
+1["0"]~~~2:::hidden
+1["0"]~~~3:::hidden
 classDef hidden display: none; classDef red fill:red,color:#000;</div>
 </div>
 

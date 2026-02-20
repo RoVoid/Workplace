@@ -309,7 +309,7 @@ class RBTree {
                 if (pair.node->right) pairs.push({pair.index + 1, pair.node->right});
             }
         }
-        cout << endl << "/\\/\\/\\/\\/\\" << endl;
+        cout << endl << "----------" << endl;
     }
 };
 
@@ -400,10 +400,10 @@ int main() {
         }
     }
 
-    if (t.head()) {
-        t.show();
-        th.save();
-    }
+    // if (t.head()) {
+    t.show();
+    th.save();
+    // }
 
     return 0;
 }
