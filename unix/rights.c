@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <string.h>
+
+#ifdef IS_WSL
+    #define lol
+#endif
 
 int main() {
     int fd_in, fd_out;
