@@ -5,7 +5,7 @@
 #include <time.h>
 
 #define N 5
-#define T 10
+#define T 100
 
 pthread_mutex_t forks[N];
 int eaten[N];
@@ -27,6 +27,7 @@ void* philosopher(void* arg) {
 	while (running) {
 
 		pthread_mutex_lock(forks + left);
+		sleep(1);
 		pthread_mutex_lock(forks + right);
 
 		if (!running) {
