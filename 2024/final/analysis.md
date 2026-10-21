@@ -1,11 +1,11 @@
 $$
-\displaystyle{\int}_0^x\dfrac{\sin{t}+1}{\sqrt{t}}dt=\alpha
+\int_0^x\dfrac{\sin{t}+1}{\sqrt{t}}dt=\alpha
 $$
 
 Особенность в точке $t=0\Rightarrow$ замена: $t=u^2,\space{d}t=2udu,\quad{t}\in[0,x],u\in[0,\sqrt{x}]$
 
 $$
-\displaystyle{\int}_0^\sqrt{x}\dfrac{\sin{u^2}+1}{\sqrt{u^2}}2udu=2\int_0^\sqrt{x}(\sin{u^2}+1)du
+\int_{0}^{\sqrt{x}} \frac{\sin(u^2)+1}{\sqrt{u^2}}\,2u\,du = 2\int_{0}^{\sqrt{x}}(\sin(u^2)+1)\,du
 $$
 
 ---
@@ -30,8 +30,8 @@ $$
 
 **Первая часть** сходится по **признаку Дирихле**:
 
--   $\dfrac{1}{\sqrt{t}}$ убывает и стремится к нулю,
--   $\sin t$ — ограниченная и имеет ограниченную первообразную.
+- $\dfrac{1}{\sqrt{t}}$ убывает и стремится к нулю,
+- $\sin t$ — ограниченная и имеет ограниченную первообразную.
 
 **Вторая часть** — это $\displaystyle\int_1^\infty \frac{1}{\sqrt{t}} dt = 2(\sqrt{t}) \Big|_1^\infty = \infty$, т.е. **расходится**.
 
@@ -41,8 +41,8 @@ $$
 
 f(t) = $\dfrac{\sin t + 1}{\sqrt{t}}$
 
--   f(t) непрерывна
--   f(t) монотонна
--   f(t) положительная
+- f(t) непрерывна
+- f(t) монотонна
+- f(t) положительная
 
 даёт что решение **единственное** для каждого $\alpha$
