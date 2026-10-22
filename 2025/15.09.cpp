@@ -2,70 +2,76 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
+using std::ifstream;
+using std::ofstream;
+using std::string;
+using std::cerr;
+using std::cout;
+using std::endl;
+using std::ws;
 
 int var = 0;
 
 namespace test {
-    int copy(const char* f1, const char* f2) {
-        ifstream fin(f1);
-        ofstream fout(f2);
-        if (!fin.is_open() || !fout.is_open()) {
-            cerr << "Error open files!" << endl;
-            return 1;
-        }
+	int copy(const char* f1, const char* f2) {
+		ifstream fin(f1);
+		ofstream fout(f2);
+		if (!fin.is_open() || !fout.is_open()) {
+			cerr << "Error open files!" << endl;
+			return 1;
+		}
 
-        string fields[3];
-        short year;
-        float score;
+		string fields[3];
+		short year;
+		float score;
 
-        const char* msgs[5] = {"Surname", "Name", "Father", "Year", "Score"};
+		const char* msgs[5] = { "Surname", "Name", "Father", "Year", "Score" };
 
-        for (int i = 0; i < 3; ++i) {
-            if (!(fin >> fields[i])) {
-                cerr << "Fail " << msgs[i] << "!" << endl;
-                return 1;
-            }
-            fout << fields[i] << endl;
-        }
+		for (int i = 0; i < 3; ++i) {
+			if (!(fin >> fields[i])) {
+				cerr << "Fail " << msgs[i] << "!" << endl;
+				return 1;
+			}
+			fout << fields[i] << endl;
+		}
 
-        if (!(fin >> year)) {
-            cerr << "Fail " << msgs[3] << "!" << endl;
-            return 1;
-        }
-        fout << year << endl;
+		if (!(fin >> year)) {
+			cerr << "Fail " << msgs[3] << "!" << endl;
+			return 1;
+		}
+		fout << year << endl;
 
-        if (!(fin >> score)) {
-            cerr << "Fail " << msgs[4] << "!" << endl;
-            return 1;
-        }
-        fout << score << endl;
+		if (!(fin >> score)) {
+			cerr << "Fail " << msgs[4] << "!" << endl;
+			return 1;
+		}
+		fout << score << endl;
 
-        if (fin >> ws && !fin.eof()) {
-            cerr << "Too many data!" << endl;
-            return 1;
-        }
+		if (fin >> ws && !fin.eof()) {
+			cerr << "Too many data!" << endl;
+			return 1;
+		}
 
-        fin.close();
-        fout.close();
+		fin.close();
+		fout.close();
 
-        return 0;
-    };
+		return 0;
+	};
 }  // namespace test
 
 int main(int argc, char** argv) {
-    int var = 1;
+	int var = 1;
 
-    const char* f1 = "1.txt";
-    const char* f2 = "2.txt";
+	const char* f1 = "1.txt";
+	const char* f2 = "2.txt";
 
-    if (argc >= 3) {
-        f1 = argv[1];
-        f2 = argv[2];
-    }
+	if (argc >= 3) {
+		f1 = argv[1];
+		f2 = argv[2];
+	}
 
-    cout << "Global var = " << ::var << endl;
-    cout << "Local var = " << var << endl;
+	cout << "Global var = " << ::var << endl;
+	cout << "Local var = " << var << endl;
 
-    return test::copy(f1, f2);
+	return test::copy(f1, f2);
 }
