@@ -8,3 +8,4 @@ data
 private
 .clang-format
 *.out
+!*CMakeLists.txt

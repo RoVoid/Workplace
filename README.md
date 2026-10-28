@@ -59,3 +59,7 @@
 - **Разделяемая память и семафоры**: [c3.c](2025/unix/t/c3.c), [c4.c](2025/unix/t/c4.c), [c6.c](2025/unix/t/c6.c), [c6a.c](2025/unix/t/c6a.c), [c7.c](2025/unix/t/c7.c), [c7a.c](2025/unix/t/c7a.c), [c8.c](2025/unix/t/c8.c)
 - **Файлы, отображаемые в память**: [c10.c](2025/unix/t/c10.c)
 - **Сокеты**: [client.c](2025/unix/t/sockets/client.c), [server.c](2025/unix/t/sockets/server.c)
+
+## 2026
+
+- **Первое использование CMAKE** [first_cmake](first_cmake)
