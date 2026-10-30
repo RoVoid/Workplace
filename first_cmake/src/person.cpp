@@ -3,12 +3,12 @@
 Person::Person(std::string name) : name(name), money(0, 0) {
 }
 
-Person& Person::operator=(Money other) {
+Person& Person::operator=(Money<double> other) {
 	money = other;
 	return *this;
 }
 
-Money& Person::getMoney() {
+Money<double>& Person::getMoney() {
 	return money;
 }
 

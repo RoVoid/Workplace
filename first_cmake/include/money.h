@@ -2,12 +2,15 @@
 
 #include <ostream>
 
+template < typename T >
 class Money {
-	unsigned cash;
-	unsigned remote;
+	T cash;
+	T remote;
 public:
-	Money(unsigned cash, unsigned remote);
+	Money(T cash, T remote);
 	Money operator + (Money other) const;
 	friend std::ostream& operator << (std::ostream & os, const Money& money);
+	T getCash() const;
+	T getRemote() const;
+	T total() const;
 };
-
