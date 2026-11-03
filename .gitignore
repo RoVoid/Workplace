@@ -8,4 +8,5 @@ data
 private
 .clang-format
 *.out
+*doctest.h
 !*CMakeLists.txt

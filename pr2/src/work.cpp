@@ -4,21 +4,21 @@ using std::cout;
 using std::endl;
 
 Workable::Workable(int kpd) : kpd(kpd) {
-	cout << "Hire with kpd = " + kpd << endl;
+	cout << "Hire with kpd = " << kpd << endl;
 }
 
 Workable::~Workable() {
-	cout << "Free with kpd = " + kpd << endl;
+	cout << "Free with kpd = " << kpd << endl;
 }
 
 Workable::Workable(const Workable& other) {
 	kpd = other.kpd;
-	cout << "Copy with kpd = " + kpd << endl;
+	cout << "Copy with kpd = " << kpd << endl;
 }
 
 Workable& Workable::operator=(const Workable& other) {
 	kpd = other.kpd;
-	cout << "Equals with kpd = " + kpd << endl;
+	cout << "Equals with kpd = " << kpd << endl;
 	return *this;
 }
 
@@ -27,7 +27,7 @@ void Workable::work() {
 }
 
 Human::Human(int kpd) : Workable(kpd) {
-	cout << "Hire human with kpd = " + kpd << endl;
+	cout << "Hire human with kpd = " << kpd << endl;
 }
 
 void Human::work() {
@@ -35,7 +35,7 @@ void Human::work() {
 }
 
 Robot::Robot(int kpd) : Workable(kpd) {
-	cout << "Hire robot with kpd = " + kpd << endl;
+	cout << "Hire robot with kpd = " << kpd << endl;
 }
 
 void Robot::work() {
