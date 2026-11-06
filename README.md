@@ -6,7 +6,7 @@
 
 **Не для публичного пользования!!!**
 
-Последнее: **Умные указательные unique_ptr и shared_ptr**: [pr3](pr3)
+Последнее: **Boost::program_options**: [pr4](pr4)
 
 ## 2024
 
@@ -69,3 +69,4 @@
 - **Первое использование CMAKE**: [first_cmake](first_cmake)
 - **Конструктор копирования и оператор**: [pr2](pr2)
 - **Умные указательные unique_ptr и shared_ptr**: [pr3](pr3)
+- **Boost::program_options**: [pr4](pr4)
